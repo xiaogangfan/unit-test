@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<options>
+  <configurable id="preferences.keymap" configurable_name="Keymap">
+    <option name="auto-scroll" path="ActionManager" hit="Auto-Scroll Preview" />
+    <option name="preview" path="ActionManager" hit="Auto-Scroll Preview" />
+    <option name="change" path="ActionManager" hit="Change split layout" />
+    <option name="layout" path="ActionManager" hit="Change split layout" />
+    <option name="split" path="ActionManager" hit="Change split layout" />
+    <option name="a" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="and" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="creates" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="from" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="it" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="link" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="reference" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="replaces" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="text" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="with" path="ActionManager" hit="Creates link from text and replaces it with a reference" />
+    <option name="a" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="by" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="caret" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="creates" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="header" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="increases" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="level" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="of" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="or" path="ActionManager" hit="Creates or increases level of a header by caret" />
+    <option name="decrease" path="ActionManager" hit="Decrease Header Level" />
+    <option name="header" path="ActionManager" hit="Decrease Header Level" />
+    <option name="level" path="ActionManager" hit="Decrease Header Level" />
+    <option name="a" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="by" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="caret" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="decreases" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="header" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="level" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="of" path="ActionManager" hit="Decreases level of a header by caret" />
+    <option name="auto" path="ActionManager" hit="Enable/Disable preview auto scroll" />
+    <option name="disable" path="ActionManager" hit="Enable/Disable preview auto scroll" />
+    <option name="enable" path="ActionManager" hit="Enable/Disable preview auto scroll" />
+    <option name="preview" path="ActionManager" hit="Enable/Disable preview auto scroll" />
+    <option name="scroll" path="ActionManager" hit="Enable/Disable preview auto scroll" />
+    <option name="header" path="ActionManager" hit="Increase Header Level" />
+    <option name="increase" path="ActionManager" hit="Increase Header Level" />
+    <option name="level" path="ActionManager" hit="Increase Header Level" />
+    <option name="introduce" path="ActionManager" hit="Introduce reference" />
+    <option name="reference" path="ActionManager" hit="Introduce reference" />
+    <option name="and" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="editor" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="in" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="layout" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="markdown" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="preview" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="sets" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="show" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="split" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="to" path="ActionManager" hit="Sets markdown editor layout to show editor and preview in split" />
+    <option name="editor" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="layout" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="markdown" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="only" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="sets" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="show" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="to" path="ActionManager" hit="Sets markdown editor layout to show editor only" />
+    <option name="editor" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="layout" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="markdown" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="only" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="preview" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="sets" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="show" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="to" path="ActionManager" hit="Sets markdown editor layout to show preview only" />
+    <option name="and" path="ActionManager" hit="Show editor and preview" />
+    <option name="editor" path="ActionManager" hit="Show editor and preview" />
+    <option name="preview" path="ActionManager" hit="Show editor and preview" />
+    <option name="show" path="ActionManager" hit="Show editor and preview" />
+    <option name="editor" path="ActionManager" hit="Show editor only" />
+    <option name="only" path="ActionManager" hit="Show editor only" />
+    <option name="show" path="ActionManager" hit="Show editor only" />
+    <option name="only" path="ActionManager" hit="Show preview only" />
+    <option name="preview" path="ActionManager" hit="Show preview only" />
+    <option name="show" path="ActionManager" hit="Show preview only" />
+    <option name="bold" path="ActionManager" hit="Toggle bold mode" />
+    <option name="mode" path="ActionManager" hit="Toggle bold mode" />
+    <option name="toggle" path="ActionManager" hit="Toggle bold mode" />
+    <option name="italic" path="ActionManager" hit="Toggle italic mode" />
+    <option name="mode" path="ActionManager" hit="Toggle italic mode" />
+    <option name="toggle" path="ActionManager" hit="Toggle italic mode" />
+    <option name="different" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="editor" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="layout" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="markdown" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="only" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="preview" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="split" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="through" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="toggle" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="values" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="wysiwyg" path="ActionManager" hit="Toggle markdown editor layout through different values (editor only, preview only, wysiwyg split)" />
+    <option name="code" path="ActionManager" hit="Toggle monospaced (code span) mode" />
+    <option name="mode" path="ActionManager" hit="Toggle monospaced (code span) mode" />
+    <option name="monospaced" path="ActionManager" hit="Toggle monospaced (code span) mode" />
+    <option name="span" path="ActionManager" hit="Toggle monospaced (code span) mode" />
+    <option name="toggle" path="ActionManager" hit="Toggle monospaced (code span) mode" />
+    <option name="mode" path="ActionManager" hit="Toggle strikethrough mode" />
+    <option name="strikethrough" path="ActionManager" hit="Toggle strikethrough mode" />
+    <option name="toggle" path="ActionManager" hit="Toggle strikethrough mode" />
+    <option name="bold" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="caret" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="mode" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="on" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="selection" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="toggles" path="ActionManager" hit="Toggles bold mode on caret/selection" />
+    <option name="caret" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="italic" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="mode" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="on" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="selection" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="toggles" path="ActionManager" hit="Toggles italic mode on caret/selection" />
+    <option name="as" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="caret" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="code" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="mode" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="monospaced" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="on" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="rendered" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="selection" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="span" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="toggles" path="ActionManager" hit="Toggles monospaced mode (rendered as code span) on caret/selection" />
+    <option name="caret" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+    <option name="mode" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+    <option name="on" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+    <option name="selection" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+    <option name="strikethrough" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+    <option name="toggles" path="ActionManager" hit="Toggles strikethrough mode on caret/selection" />
+  </configurable>
+  <configurable id="reference.settingsdialog.IDE.editor.colors.Markdown" configurable_name="Markdown">
+    <option name="markdown" hit="Markdown" />
+    <option name="1st" hit="1st level header" />
+    <option name="header" hit="1st level header" />
+    <option name="level" hit="1st level header" />
+    <option name="2nd" hit="2nd level header" />
+    <option name="header" hit="2nd level header" />
+    <option name="level" hit="2nd level header" />
+    <option name="3rd" hit="3rd level header" />
+    <option name="header" hit="3rd level header" />
+    <option name="level" hit="3rd level header" />
+    <option name="4th" hit="4th level header" />
+    <option name="header" hit="4th level header" />
+    <option name="level" hit="4th level header" />
+    <option name="5th" hit="5th level header" />
+    <option name="header" hit="5th level header" />
+    <option name="level" hit="5th level header" />
+    <option name="6th" hit="6th level header" />
+    <option name="header" hit="6th level header" />
+    <option name="level" hit="6th level header" />
+    <option name="auto" hit="Auto link" />
+    <option name="link" hit="Auto link" />
+    <option name="blockquote" hit="Blockquote" />
+    <option name="blockquote" hit="Blockquote marker" />
+    <option name="marker" hit="Blockquote marker" />
+    <option name="bold" hit="Bold marker" />
+    <option name="marker" hit="Bold marker" />
+    <option name="bold" hit="Bold text" />
+    <option name="text" hit="Bold text" />
+    <option name="block" hit="Code block" />
+    <option name="code" hit="Code block" />
+    <option name="code" hit="Code fence" />
+    <option name="fence" hit="Code fence" />
+    <option name="code" hit="Code span" />
+    <option name="span" hit="Code span" />
+    <option name="code" hit="Code span marker" />
+    <option name="marker" hit="Code span marker" />
+    <option name="span" hit="Code span marker" />
+    <option name="explicit" hit="Explicit link" />
+    <option name="link" hit="Explicit link" />
+    <option name="block" hit="HTML block" />
+    <option name="html" hit="HTML block" />
+    <option name="header" hit="Header marker" />
+    <option name="marker" hit="Header marker" />
+    <option name="horizontal" hit="Horizontal rule" />
+    <option name="rule" hit="Horizontal rule" />
+    <option name="image" hit="Image" />
+    <option name="html" hit="Inline HTML" />
+    <option name="inline" hit="Inline HTML" />
+    <option name="italic" hit="Italic marker" />
+    <option name="marker" hit="Italic marker" />
+    <option name="italic" hit="Italic text" />
+    <option name="text" hit="Italic text" />
+    <option name="definition" hit="Link definition" />
+    <option name="link" hit="Link definition" />
+    <option name="destination" hit="Link destination" />
+    <option name="link" hit="Link destination" />
+    <option name="label" hit="Link label" />
+    <option name="link" hit="Link label" />
+    <option name="link" hit="Link text" />
+    <option name="text" hit="Link text" />
+    <option name="link" hit="Link title" />
+    <option name="title" hit="Link title" />
+    <option name="item" hit="List item" />
+    <option name="list" hit="List item" />
+    <option name="list" hit="List marker" />
+    <option name="marker" hit="List marker" />
+    <option name="list" hit="Ordered list" />
+    <option name="ordered" hit="Ordered list" />
+    <option name="link" hit="Reference link" />
+    <option name="reference" hit="Reference link" />
+    <option name="strike" hit="Strike through" />
+    <option name="through" hit="Strike through" />
+    <option name="separator" hit="Table separator" />
+    <option name="table" hit="Table separator" />
+    <option name="text" hit="Text" />
+    <option name="list" hit="Unordered list" />
+    <option name="unordered" hit="Unordered list" />
+  </configurable>
+  <configurable id="preferences.sourceCode.Markdown" configurable_name="Markdown">
+    <option name="disable" hit="Disable" />
+    <option name="loading" hit="Loading..." />
+    <option name="markdown" hit="Markdown" />
+    <option name="scheme" hit="Scheme:" />
+    <option name="from" hit="Set from..." />
+    <option name="set" hit="Set from..." />
+    <option name="and" path="Wrapping and Braces" hit="Wrapping and Braces" />
+    <option name="braces" path="Wrapping and Braces" hit="Wrapping and Braces" />
+    <option name="wrapping" path="Wrapping and Braces" hit="Wrapping and Braces" />
+    <option name="" hit="':' signs on next line" />
+    <option name="line" hit="':' signs on next line" />
+    <option name="next" hit="':' signs on next line" />
+    <option name="on" hit="':' signs on next line" />
+    <option name="signs" hit="':' signs on next line" />
+    <option name="" hit="'?' and ':' signs on next line" />
+    <option name="and" hit="'?' and ':' signs on next line" />
+    <option name="line" hit="'?' and ':' signs on next line" />
+    <option name="next" hit="'?' and ':' signs on next line" />
+    <option name="on" hit="'?' and ':' signs on next line" />
+    <option name="signs" hit="'?' and ':' signs on next line" />
+    <option name="" hit="'catch' on new line" />
+    <option name="catch" hit="'catch' on new line" />
+    <option name="line" hit="'catch' on new line" />
+    <option name="new" hit="'catch' on new line" />
+    <option name="on" hit="'catch' on new line" />
+    <option name="" hit="'do ... while()' statement" />
+    <option name="do" hit="'do ... while()' statement" />
+    <option name="statement" hit="'do ... while()' statement" />
+    <option name="while" hit="'do ... while()' statement" />
+    <option name="" hit="'else' on new line" />
+    <option name="else" hit="'else' on new line" />
+    <option name="line" hit="'else' on new line" />
+    <option name="new" hit="'else' on new line" />
+    <option name="on" hit="'else' on new line" />
+    <option name="" hit="'finally' on new line" />
+    <option name="finally" hit="'finally' on new line" />
+    <option name="line" hit="'finally' on new line" />
+    <option name="new" hit="'finally' on new line" />
+    <option name="on" hit="'finally' on new line" />
+    <option name="" hit="'for()' statement" />
+    <option name="for" hit="'for()' statement" />
+    <option name="statement" hit="'for()' statement" />
+    <option name="" hit="'if()' statement" />
+    <option name="if" hit="'if()' statement" />
+    <option name="statement" hit="'if()' statement" />
+    <option name="" hit="'switch' statement" />
+    <option name="statement" hit="'switch' statement" />
+    <option name="switch" hit="'switch' statement" />
+    <option name="" hit="'try' statement" />
+    <option name="statement" hit="'try' statement" />
+    <option name="try" hit="'try' statement" />
+    <option name="" hit="'try-with-resources'" />
+    <option name="try-with-resources" hit="'try-with-resources'" />
+    <option name="" hit="'while' on new line" />
+    <option name="line" hit="'while' on new line" />
+    <option name="new" hit="'while' on new line" />
+    <option name="on" hit="'while' on new line" />
+    <option name="while" hit="'while' on new line" />
+    <option name="" hit="'while()' statement" />
+    <option name="statement" hit="'while()' statement" />
+    <option name="while" hit="'while()' statement" />
+    <option name="align" hit="Align 'throws' to method start" />
+    <option name="method" hit="Align 'throws' to method start" />
+    <option name="start" hit="Align 'throws' to method start" />
+    <option name="throws" hit="Align 'throws' to method start" />
+    <option name="to" hit="Align 'throws' to method start" />
+    <option name="align" hit="Align assignments in columns" />
+    <option name="assignments" hit="Align assignments in columns" />
+    <option name="columns" hit="Align assignments in columns" />
+    <option name="in" hit="Align assignments in columns" />
+    <option name="align" hit="Align fields in columns" />
+    <option name="columns" hit="Align fields in columns" />
+    <option name="fields" hit="Align fields in columns" />
+    <option name="in" hit="Align fields in columns" />
+    <option name="align" hit="Align parenthesised when multiline" />
+    <option name="multiline" hit="Align parenthesised when multiline" />
+    <option name="parenthesised" hit="Align parenthesised when multiline" />
+    <option name="when" hit="Align parenthesised when multiline" />
+    <option name="align" hit="Align simple methods in columns" />
+    <option name="columns" hit="Align simple methods in columns" />
+    <option name="in" hit="Align simple methods in columns" />
+    <option name="methods" hit="Align simple methods in columns" />
+    <option name="simple" hit="Align simple methods in columns" />
+    <option name="align" hit="Align variables in columns" />
+    <option name="columns" hit="Align variables in columns" />
+    <option name="in" hit="Align variables in columns" />
+    <option name="variables" hit="Align variables in columns" />
+    <option name="align" hit="Align when multiline" />
+    <option name="multiline" hit="Align when multiline" />
+    <option name="when" hit="Align when multiline" />
+    <option name="array" hit="Array initializer" />
+    <option name="initializer" hit="Array initializer" />
+    <option name="assert" hit="Assert statement" />
+    <option name="statement" hit="Assert statement" />
+    <option name="assignment" hit="Assignment sign on next line" />
+    <option name="line" hit="Assignment sign on next line" />
+    <option name="next" hit="Assignment sign on next line" />
+    <option name="on" hit="Assignment sign on next line" />
+    <option name="sign" hit="Assignment sign on next line" />
+    <option name="assignment" hit="Assignment statement" />
+    <option name="statement" hit="Assignment statement" />
+    <option name="binary" hit="Binary expressions" />
+    <option name="expressions" hit="Binary expressions" />
+    <option name="braces" hit="Braces placement" />
+    <option name="placement" hit="Braces placement" />
+    <option name="calls" hit="Chained method calls" />
+    <option name="chained" hit="Chained method calls" />
+    <option name="method" hit="Chained method calls" />
+    <option name="annotations" hit="Class annotations" />
+    <option name="class" hit="Class annotations" />
+    <option name="at" hit="Comment at first column" />
+    <option name="column" hit="Comment at first column" />
+    <option name="comment" hit="Comment at first column" />
+    <option name="first" hit="Comment at first column" />
+    <option name="comments" hit="Comments" />
+    <option name="control" hit="Control statement in one line" />
+    <option name="in" hit="Control statement in one line" />
+    <option name="line" hit="Control statement in one line" />
+    <option name="one" hit="Control statement in one line" />
+    <option name="statement" hit="Control statement in one line" />
+    <option name="a" hit="Each 'case' on a separate line" />
+    <option name="case" hit="Each 'case' on a separate line" />
+    <option name="each" hit="Each 'case' on a separate line" />
+    <option name="line" hit="Each 'case' on a separate line" />
+    <option name="on" hit="Each 'case' on a separate line" />
+    <option name="separate" hit="Each 'case' on a separate line" />
+    <option name="ensure" hit="Ensure right margin is not exceeded" />
+    <option name="exceeded" hit="Ensure right margin is not exceeded" />
+    <option name="is" hit="Ensure right margin is not exceeded" />
+    <option name="margin" hit="Ensure right margin is not exceeded" />
+    <option name="not" hit="Ensure right margin is not exceeded" />
+    <option name="right" hit="Ensure right margin is not exceeded" />
+    <option name="constants" hit="Enum constants" />
+    <option name="enum" hit="Enum constants" />
+    <option name="extends" hit="Extends/implements keyword" />
+    <option name="implements" hit="Extends/implements keyword" />
+    <option name="keyword" hit="Extends/implements keyword" />
+    <option name="extends" hit="Extends/implements list" />
+    <option name="implements" hit="Extends/implements list" />
+    <option name="list" hit="Extends/implements list" />
+    <option name="annotations" hit="Field annotations" />
+    <option name="field" hit="Field annotations" />
+    <option name="braces" hit="Force braces" />
+    <option name="force" hit="Force braces" />
+    <option name="declarations" hit="Group declarations" />
+    <option name="group" hit="Group declarations" />
+    <option name="at" hit="Hard wrap at" />
+    <option name="hard" hit="Hard wrap at" />
+    <option name="wrap" hit="Hard wrap at" />
+    <option name="class" hit="In class declaration" />
+    <option name="declaration" hit="In class declaration" />
+    <option name="in" hit="In class declaration" />
+    <option name="declaration" hit="In lambda declaration" />
+    <option name="in" hit="In lambda declaration" />
+    <option name="lambda" hit="In lambda declaration" />
+    <option name="declaration" hit="In method declaration" />
+    <option name="in" hit="In method declaration" />
+    <option name="method" hit="In method declaration" />
+    <option name="break" hit="Indent 'break' from 'case'" />
+    <option name="case" hit="Indent 'break' from 'case'" />
+    <option name="from" hit="Indent 'break' from 'case'" />
+    <option name="indent" hit="Indent 'break' from 'case'" />
+    <option name="branches" hit="Indent 'case' branches" />
+    <option name="case" hit="Indent 'case' branches" />
+    <option name="indent" hit="Indent 'case' branches" />
+    <option name="keep" hit="Keep when reformatting" />
+    <option name="reformatting" hit="Keep when reformatting" />
+    <option name="when" hit="Keep when reformatting" />
+    <option name="breaks" hit="Line breaks" />
+    <option name="line" hit="Line breaks" />
+    <option name="annotations" hit="Local variable annotations" />
+    <option name="local" hit="Local variable annotations" />
+    <option name="variable" hit="Local variable annotations" />
+    <option name="annotations" hit="Method annotations" />
+    <option name="method" hit="Method annotations" />
+    <option name="arguments" hit="Method call arguments" />
+    <option name="call" hit="Method call arguments" />
+    <option name="method" hit="Method call arguments" />
+    <option name="declaration" hit="Method declaration parameters" />
+    <option name="method" hit="Method declaration parameters" />
+    <option name="parameters" hit="Method declaration parameters" />
+    <option name="method" hit="Method parentheses" />
+    <option name="parentheses" hit="Method parentheses" />
+    <option name="list" hit="Modifier list" />
+    <option name="modifier" hit="Modifier list" />
+    <option name="expressions" hit="Multiple expressions in one line" />
+    <option name="in" hit="Multiple expressions in one line" />
+    <option name="line" hit="Multiple expressions in one line" />
+    <option name="multiple" hit="Multiple expressions in one line" />
+    <option name="one" hit="Multiple expressions in one line" />
+    <option name="after" hit="New line after '('" />
+    <option name="line" hit="New line after '('" />
+    <option name="new" hit="New line after '('" />
+    <option name="after" hit="New line after '{'" />
+    <option name="line" hit="New line after '{'" />
+    <option name="new" hit="New line after '{'" />
+    <option name="line" hit="Operation sign on next line" />
+    <option name="next" hit="Operation sign on next line" />
+    <option name="on" hit="Operation sign on next line" />
+    <option name="operation" hit="Operation sign on next line" />
+    <option name="sign" hit="Operation sign on next line" />
+    <option name="other" hit="Other" />
+    <option name="annotations" hit="Parameter annotations" />
+    <option name="parameter" hit="Parameter annotations" />
+    <option name="line" hit="Place ')' on new line" />
+    <option name="new" hit="Place ')' on new line" />
+    <option name="on" hit="Place ')' on new line" />
+    <option name="place" hit="Place ')' on new line" />
+    <option name="line" hit="Place '}' on new line" />
+    <option name="new" hit="Place '}' on new line" />
+    <option name="on" hit="Place '}' on new line" />
+    <option name="place" hit="Place '}' on new line" />
+    <option name="blocks" hit="Simple blocks in one line" />
+    <option name="in" hit="Simple blocks in one line" />
+    <option name="line" hit="Simple blocks in one line" />
+    <option name="one" hit="Simple blocks in one line" />
+    <option name="simple" hit="Simple blocks in one line" />
+    <option name="classes" hit="Simple classes in one line" />
+    <option name="in" hit="Simple classes in one line" />
+    <option name="line" hit="Simple classes in one line" />
+    <option name="one" hit="Simple classes in one line" />
+    <option name="simple" hit="Simple classes in one line" />
+    <option name="in" hit="Simple lambdas in one line" />
+    <option name="lambdas" hit="Simple lambdas in one line" />
+    <option name="line" hit="Simple lambdas in one line" />
+    <option name="one" hit="Simple lambdas in one line" />
+    <option name="simple" hit="Simple lambdas in one line" />
+    <option name="in" hit="Simple methods in one line" />
+    <option name="line" hit="Simple methods in one line" />
+    <option name="methods" hit="Simple methods in one line" />
+    <option name="one" hit="Simple methods in one line" />
+    <option name="simple" hit="Simple methods in one line" />
+    <option name="else" hit="Special 'else if' treatment" />
+    <option name="if" hit="Special 'else if' treatment" />
+    <option name="special" hit="Special 'else if' treatment" />
+    <option name="treatment" hit="Special 'else if' treatment" />
+    <option name="call" hit="Take priority over call chain wrapping" />
+    <option name="chain" hit="Take priority over call chain wrapping" />
+    <option name="over" hit="Take priority over call chain wrapping" />
+    <option name="priority" hit="Take priority over call chain wrapping" />
+    <option name="take" hit="Take priority over call chain wrapping" />
+    <option name="wrapping" hit="Take priority over call chain wrapping" />
+    <option name="operation" hit="Ternary operation" />
+    <option name="ternary" hit="Ternary operation" />
+    <option name="keyword" hit="Throws keyword" />
+    <option name="throws" hit="Throws keyword" />
+    <option name="list" hit="Throws list" />
+    <option name="throws" hit="Throws list" />
+    <option name="guides" hit="Visual guides" />
+    <option name="visual" hit="Visual guides" />
+    <option name="after" hit="Wrap after modifier list" />
+    <option name="list" hit="Wrap after modifier list" />
+    <option name="modifier" hit="Wrap after modifier list" />
+    <option name="wrap" hit="Wrap after modifier list" />
+    <option name="at" hit="Wrap at right margin" />
+    <option name="margin" hit="Wrap at right margin" />
+    <option name="right" hit="Wrap at right margin" />
+    <option name="wrap" hit="Wrap at right margin" />
+    <option name="call" hit="Wrap first call" />
+    <option name="first" hit="Wrap first call" />
+    <option name="wrap" hit="Wrap first call" />
+    <option name="on" hit="Wrap on typing" />
+    <option name="typing" hit="Wrap on typing" />
+    <option name="wrap" hit="Wrap on typing" />
+  </configurable>
+  <configurable id="Settings.Markdown" configurable_name="Markdown">
+    <option name="add" hit="Add CSS rules:" />
+    <option name="css" hit="Add CSS rules:" />
+    <option name="rules" hit="Add CSS rules:" />
+    <option name="auto-scroll" hit="Auto-scroll preview" />
+    <option name="preview" hit="Auto-scroll preview" />
+    <option name="css" hit="Custom CSS" />
+    <option name="custom" hit="Custom CSS" />
+    <option name="default" hit="Default layout:" />
+    <option name="layout" hit="Default layout:" />
+    <option name="automatic" hit="Disable automatic language injection in code fences" />
+    <option name="code" hit="Disable automatic language injection in code fences" />
+    <option name="disable" hit="Disable automatic language injection in code fences" />
+    <option name="fences" hit="Disable automatic language injection in code fences" />
+    <option name="in" hit="Disable automatic language injection in code fences" />
+    <option name="injection" hit="Disable automatic language injection in code fences" />
+    <option name="language" hit="Disable automatic language injection in code fences" />
+    <option name="and" hit="Editor and Preview Panel Layout:" />
+    <option name="editor" hit="Editor and Preview Panel Layout:" />
+    <option name="layout" hit="Editor and Preview Panel Layout:" />
+    <option name="panel" hit="Editor and Preview Panel Layout:" />
+    <option name="preview" hit="Editor and Preview Panel Layout:" />
+    <option name="and" hit="Editor and preview" />
+    <option name="editor" hit="Editor and preview" />
+    <option name="preview" hit="Editor and preview" />
+    <option name="editor" hit="Editor only" />
+    <option name="only" hit="Editor only" />
+    <option name="grayscale" hit="Grayscale" />
+    <option name="code" hit="Hide errors in code fences" />
+    <option name="errors" hit="Hide errors in code fences" />
+    <option name="fences" hit="Hide errors in code fences" />
+    <option name="hide" hit="Hide errors in code fences" />
+    <option name="in" hit="Hide errors in code fences" />
+    <option name="install" hit="Install" />
+    <option name="javafx" hit="JavaFX WebView" />
+    <option name="webview" hit="JavaFX WebView" />
+    <option name="from" hit="Load from URI:" />
+    <option name="load" hit="Load from URI:" />
+    <option name="uri" hit="Load from URI:" />
+    <option name="markdown" hit="Markdown" />
+    <option name="framework" hit="PlantUML framework isn't installed." />
+    <option name="installed" hit="PlantUML framework isn't installed." />
+    <option name="isn" hit="PlantUML framework isn't installed." />
+    <option name="plantuml" hit="PlantUML framework isn't installed." />
+    <option name="t" hit="PlantUML framework isn't installed." />
+    <option name="browser" hit="Preview browser:" />
+    <option name="preview" hit="Preview browser:" />
+    <option name="only" hit="Preview only" />
+    <option name="preview" hit="Preview only" />
+    <option name="horizontally" hit="Split horizontally" />
+    <option name="split" hit="Split horizontally" />
+    <option name="split" hit="Split vertically" />
+    <option name="vertically" hit="Split vertically" />
+  </configurable>
+</options>
+

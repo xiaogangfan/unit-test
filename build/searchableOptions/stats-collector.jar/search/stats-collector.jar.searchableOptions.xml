@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<options>
+  <configurable id="editor.preferences.completion" configurable_name="Code Completion">
+    <option name="java" hit="Java" />
+    <option name="kotlin" hit="Kotlin" />
+    <option name="assistant" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="code" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="completion" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="experimental" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="learning" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="machine" hit="Machine Learning Assistant Code Completion (experimental)" />
+    <option name="completion" hit="Machine Learning completion ranking" />
+    <option name="learning" hit="Machine Learning completion ranking" />
+    <option name="machine" hit="Machine Learning completion ranking" />
+    <option name="ranking" hit="Machine Learning completion ranking" />
+    <option name="python" hit="Python" />
+    <option name="completion" hit="Show diff in completion popup" />
+    <option name="diff" hit="Show diff in completion popup" />
+    <option name="in" hit="Show diff in completion popup" />
+    <option name="popup" hit="Show diff in completion popup" />
+    <option name="show" hit="Show diff in completion popup" />
+  </configurable>
+</options>
+
