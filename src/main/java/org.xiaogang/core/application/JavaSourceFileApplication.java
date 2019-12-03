@@ -5,7 +5,6 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.google.common.collect.Lists;
 
-import org.mozilla.javascript.annotations.JSFunction;
 import org.xiaogang.core.domain.model.JavaSourceFile;
 import org.xiaogang.core.domain.model.MethodVisitor;
 import org.xiaogang.core.domain.model.ModelEnum;
