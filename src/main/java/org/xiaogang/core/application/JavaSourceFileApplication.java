@@ -6,7 +6,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.google.common.collect.Lists;
 
 import org.xiaogang.core.domain.model.JavaSourceFile;
-import org.xiaogang.core.domain.model.MethodVisitor;
+import org.xiaogang.core.domain.model.JavaSourceFileVisitor;
 import org.xiaogang.core.domain.model.ModelEnum;
 import org.xiaogang.core.domain.model.factory.AbstractTestCodeFactory;
 
@@ -51,7 +51,7 @@ public class JavaSourceFileApplication {
                 CompilationUnit cu = JavaParser.parse(in);
                 JavaSourceFile jsf = new JavaSourceFile();
                 jsf.setPathName(fileName);
-                cu.accept(new MethodVisitor(), jsf);
+                cu.accept(new JavaSourceFileVisitor(), jsf);
                 javaSourceFileList.add(jsf);
             }
         } catch (Exception e) {
@@ -127,7 +127,7 @@ public class JavaSourceFileApplication {
 
     public static void generateFiles(String path) {
         List<String> fileNames = Lists.newArrayList();
-        JavaSourceFileApplication.findFileList(
+        findFileList(
                 new File(path)
                 , fileNames
         );

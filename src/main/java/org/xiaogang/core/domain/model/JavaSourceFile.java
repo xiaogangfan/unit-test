@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 描述:
@@ -25,8 +27,9 @@ public class JavaSourceFile {
     private String name;
     private String extendsClass;
     private String implementInterface;
-    private List<String> importList;
+    private Set<String> importList = new HashSet<>();
     private List<VariableDeclarator> fieldList;
     private List<Method> methodList;
+
 
 }

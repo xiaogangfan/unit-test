@@ -47,11 +47,17 @@ public abstract class AbstractTestCodeFactory {
 
     public String createFileString() {
         setPkg();
+        setImport();
         setClassHeader();
         setClassBody();
 
         return generateTestFileString();
     }
+
+    protected void setImport() {
+        this.importList.addAll(jsf.getImportList());
+    }
+
 
     protected void setPkg() {
         pkg = Optional.ofNullable(jsf.getPkg()).map(t -> "package " + t.replace(".main.", ".test.") + sep).orElse("");
