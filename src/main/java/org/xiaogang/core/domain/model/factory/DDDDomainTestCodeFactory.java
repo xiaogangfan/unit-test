@@ -33,9 +33,11 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
 
         // 实例化待测试的实例
         String instansVarName = jsf.getName().toLowerCase();
-        methodBody.append(space8 + jsf.getName() + " " + instansVarName + " = ObjectTestUtilNew.newObjectWithPropertiesValue(" + jsf.getName() + ".class)" + sep);
+        methodBody.append(space8 + "// Initialize the object to be tested" + sep);
+        methodBody.append(space8 + jsf.getName() + " " + instansVarName + " = ObjectTestUtilNew.newObjectWithPropertiesValue(" + jsf.getName() + ".class)" + sep + enter);
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
+            methodBody.append(space8 + "// Initialize params of the method" + sep);
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
                 methodBody.append(space8 + param.getType() + " " + param.getName() + " = ObjectTestUtilNew.newObjectWithPropertiesValue(" + param.getType() + ".class)" + sep);
@@ -46,7 +48,7 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
         }
         methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
 
-        methodBody.append(space8 + instansVarName + "." + method.getName() + "(" + methodParams + ")" + sep);
+        methodBody.append(enter + space8 + instansVarName + "." + method.getName() + "(" + methodParams + ")" + sep);
         return methodBody.toString();
     }
 

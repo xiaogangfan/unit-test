@@ -17,7 +17,7 @@
 
     <actions>
         <action id="AutoGenerationTestCode.ID" class="org.xiaogang.action.AutoGenerationTestCode"
-                text="AutoGenerationTestCode" description="Automatic Generation of Unit Test Code  ">
+                text="Auto Generation Test Code" description="Automatic Generation of Unit Test Code  ">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
         </action>

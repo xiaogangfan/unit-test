@@ -14,10 +14,10 @@ repositories {
 
 
 dependencies {
-    compile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'com.github.javaparser', name: 'javaparser-core', version: '3.6.5'
+    compile 'junit:junit:4.12'
+    compile 'com.github.javaparser:javaparser-core:3.6.5'
     compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    compile 'org.apache.commons:commons-lang3:3.8.1'
 
     compile 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'

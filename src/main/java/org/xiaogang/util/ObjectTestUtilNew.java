@@ -14,6 +14,9 @@ public class ObjectTestUtilNew {
 
 
     public static <T> T newObjectWithPropertiesValue(Class<T> clz, Boolean isRecu) {
+        if (isPrimitive(clz) && !isRecu) {
+            return (T) initPrimitiveValue(clz);
+        }
         T obj = (T) ReflectUtils.newInstance(clz);
         Field[] fields = clz.getDeclaredFields();
         for (Field fieldtemp : fields) {
@@ -55,6 +58,9 @@ public class ObjectTestUtilNew {
                 if (Boolean.class.equals(fieldClz) || boolean.class.equals(fieldClz)) {
                     fieldtemp.set(obj, true);
                 }
+                if (String.class.equals(fieldClz)) {
+                    fieldtemp.set(obj, fieldName);
+                }
                 // BigDecimal类型
                 if (BigDecimal.class.equals(fieldClz)) {
                     fieldtemp.set(obj, new BigDecimal(num));
@@ -91,10 +97,72 @@ public class ObjectTestUtilNew {
                 }
 
             } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         }
         return obj;
+    }
+
+    private static Object initPrimitiveValue(Class fieldClz) {
+        Integer num = RandomUtil.randomInt(10);
+        if (Long.class.equals(fieldClz) || long.class.equals(fieldClz)) {
+            return num.longValue();
+        }
+        if (Integer.class.equals(fieldClz) || int.class.equals(fieldClz)) {
+            return num;
+        }
+        if (Short.class.equals(fieldClz) || short.class.equals(fieldClz)) {
+            return num.shortValue();
+        }
+        if (Float.class.equals(fieldClz) || float.class.equals(fieldClz)) {
+            return num.floatValue();
+        }
+        if (Double.class.equals(fieldClz) || double.class.equals(fieldClz)) {
+            return num.doubleValue();
+        }
+        if (Character.class.equals(fieldClz) || char.class.equals(fieldClz)) {
+            return RandomUtil.randomStr(1).toCharArray()[0];
+        }
+        if (Byte.class.equals(fieldClz) || byte.class.equals(fieldClz)) {
+            return RandomUtil.randomStr(1).getBytes()[0];
+        }
+        if (Boolean.class.equals(fieldClz) || boolean.class.equals(fieldClz)) {
+            return true;
+        }
+        if (String.class.equals(fieldClz)) {
+            return fieldClz.getName();
+        }
+        return null;
+    }
+
+    private static <T> boolean isPrimitive(Class<T> fieldClz) {
+        if (Long.class.equals(fieldClz) || long.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Integer.class.equals(fieldClz) || int.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Short.class.equals(fieldClz) || short.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Float.class.equals(fieldClz) || float.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Double.class.equals(fieldClz) || double.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Character.class.equals(fieldClz) || char.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Byte.class.equals(fieldClz) || byte.class.equals(fieldClz)) {
+            return true;
+        }
+        if (Boolean.class.equals(fieldClz) || boolean.class.equals(fieldClz)) {
+            return true;
+        }
+        if (String.class.equals(fieldClz)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isJavaClass(Class<?> clz) {

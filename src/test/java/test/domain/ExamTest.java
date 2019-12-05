@@ -1,21 +1,36 @@
-package test.domain; 
-import java.util.Date; 
- import org.xiaogang.util.ObjectTestUtilNew; 
-import org.xiaogang.core.domain.model.JavaSourceFile; 
- public class ExamTest {
-    public void paramStr(){ 
-        //TODO write test code
-        Exam exam = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class); 
-        String str = ObjectTestUtilNew.newObjectWithPropertiesValue(String.class); 
-        Exam e = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class); 
-        JavaSourceFile j = ObjectTestUtilNew.newObjectWithPropertiesValue(JavaSourceFile.class); 
-        exam.paramStr(str,e,j); 
-        
+package test.domain;
+
+import org.junit.Test;
+import org.xiaogang.core.domain.model.JavaSourceFile;
+import org.xiaogang.util.ObjectTestUtilNew;
+
+public class ExamTest {
+
+    @Test
+    public void paramStrTest() {
+        // Initialize the object to be tested; 
+        Exam exam = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class);
+
+        // Initialize params of the method; 
+        String str = ObjectTestUtilNew.newObjectWithPropertiesValue(String.class);
+        Exam e = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class);
+        JavaSourceFile j = ObjectTestUtilNew.newObjectWithPropertiesValue(JavaSourceFile.class);
+
+        exam.paramStr(str, e, j);
+
+        //Write the Assert code
+
     }
-    public void canViewAnswer(){ 
-        //TODO write test code
-        Exam exam = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class); 
-        exam.canViewAnswer(); 
-        
+
+    @Test
+    public void canViewAnswerTest() {
+        // Initialize the object to be tested; 
+        Exam exam = ObjectTestUtilNew.newObjectWithPropertiesValue(Exam.class);
+
+
+        exam.canViewAnswer();
+
+        //Write the Assert code
+
     }
 }

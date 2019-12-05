@@ -55,7 +55,12 @@ public abstract class AbstractTestCodeFactory {
     }
 
     protected void setImport() {
+        this.importList.add(impo + " static org.junit.Assert.*;");
+        this.importList.add(impo + " org.junit.Test;");
+        this.importList.add(enter);
         this.importList.addAll(jsf.getImportList());
+
+
     }
 
 
@@ -76,10 +81,11 @@ public abstract class AbstractTestCodeFactory {
         sb.append(pkg);
         if (CollectionUtils.isNotEmpty(importList)) {
             for (String s : importList) {
-                sb.append(s);
+                sb.append(s.trim() + enter);
             }
         }
         sb.append(classHeader + "{");
+        sb.append(enter);
         sb.append(classBody);
         sb.append(enter + "}");
         return sb.toString();
@@ -99,10 +105,11 @@ public abstract class AbstractTestCodeFactory {
             return "";
         }
         for (Method method : jsf.getMethodList()) {
-            sb.append(enter + space4 + "public void " + method.getName() + "(){ " + enter
-                    + space8 + "//TODO write test code" + enter);
+            sb.append(enter + space4 + "@Test");
+            sb.append(enter + space4 + "public void " + method.getName() + "Test(){ " + enter);
             sb.append(invoke(ModelEnum.DDD_Model, method));
             sb.append(space8 + verify(ModelEnum.DDD_Model, method));
+            sb.append(enter + space8 + "//Write the Assert code" + enter);
             sb.append(enter + space4 + "}");
         }
         return sb.toString();
