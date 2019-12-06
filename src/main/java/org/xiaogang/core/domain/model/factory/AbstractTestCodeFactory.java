@@ -106,7 +106,7 @@ public abstract class AbstractTestCodeFactory {
         }
         for (Method method : jsf.getMethodList()) {
             sb.append(enter + space4 + "@Test");
-            sb.append(enter + space4 + "public void " + method.getName() + "Test(){ " + enter);
+            sb.append(enter + space4 + "public void test " + method.getName().substring(0, 1).toUpperCase() + method.getName().substring(1) + "(){ " + enter);
             sb.append(invoke(ModelEnum.DDD_Model, method));
             sb.append(space8 + verify(ModelEnum.DDD_Model, method));
             sb.append(enter + space8 + "//Write the Assert code" + enter);
