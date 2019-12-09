@@ -25,6 +25,7 @@ public abstract class AbstractTestCodeFactory {
 
     protected String pkg;
     protected Set<String> importList = new HashSet<>();
+    protected Set<String> fieldList = new HashSet<>();
     protected String classHeader;
     protected String classBody;
     protected String implementInterface;
@@ -49,9 +50,13 @@ public abstract class AbstractTestCodeFactory {
         setPkg();
         setImport();
         setClassHeader();
+        setFields();
         setClassBody();
 
         return generateTestFileString();
+    }
+
+    protected void setFields() {
     }
 
     protected void setImport() {
@@ -84,7 +89,14 @@ public abstract class AbstractTestCodeFactory {
                 sb.append(s.trim() + enter);
             }
         }
+
         sb.append(classHeader + "{");
+        sb.append(enter);
+        if (CollectionUtils.isNotEmpty(fieldList)) {
+            for (String s : fieldList) {
+                sb.append(s.trim() + enter);
+            }
+        }
         sb.append(enter);
         sb.append(classBody);
         sb.append(enter + "}");
@@ -104,9 +116,10 @@ public abstract class AbstractTestCodeFactory {
         if (CollectionUtils.isEmpty(jsf.getMethodList())) {
             return "";
         }
+        sb.append(enter + initInstance() + enter);
         for (Method method : jsf.getMethodList()) {
             sb.append(enter + space4 + "@Test");
-            sb.append(enter + space4 + "public void test " + method.getName().substring(0, 1).toUpperCase() + method.getName().substring(1) + "(){ " + enter);
+            sb.append(enter + space4 + "public void test" + method.getName().substring(0, 1).toUpperCase() + method.getName().substring(1) + "(){ " + enter);
             sb.append(invoke(ModelEnum.DDD_Model, method));
             sb.append(space8 + verify(ModelEnum.DDD_Model, method));
             sb.append(enter + space8 + "//Write the Assert code" + enter);
@@ -114,6 +127,8 @@ public abstract class AbstractTestCodeFactory {
         }
         return sb.toString();
     }
+
+    protected abstract String initInstance();
 
     protected String verify(ModelEnum ddd_model, Method method) {
         return "";

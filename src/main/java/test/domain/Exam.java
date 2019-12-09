@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.xiaogang.core.domain.model.JavaSourceFile;
 
-
 import java.util.Date;
 
 /**
@@ -31,6 +30,7 @@ public class Exam {
 
     private String status;
     private Integer viewAnswer;
+    private JavaSourceFile javaSourceFile;
 
     public boolean paramStr(String str, Exam e, JavaSourceFile j) {
         if (viewAnswer == null) {

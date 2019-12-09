@@ -25,6 +25,7 @@ public class JavaSourceFile {
     private String absDir;
     private String pkg;
     private String name;
+    private String className;
     private String extendsClass;
     private String implementInterface;
     private Set<String> importList = new HashSet<>();

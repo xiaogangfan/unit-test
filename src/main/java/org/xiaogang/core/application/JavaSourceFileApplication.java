@@ -51,7 +51,9 @@ public class JavaSourceFileApplication {
                 CompilationUnit cu = JavaParser.parse(in);
                 JavaSourceFile jsf = new JavaSourceFile();
                 jsf.setPathName(fileName);
+
                 cu.accept(new JavaSourceFileVisitor(), jsf);
+//                jsf.setClassName()
                 javaSourceFileList.add(jsf);
             }
         } catch (Exception e) {
