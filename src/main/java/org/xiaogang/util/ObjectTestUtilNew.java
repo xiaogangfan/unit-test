@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.sf.cglib.core.ReflectUtils;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -22,6 +23,9 @@ public class ObjectTestUtilNew {
         for (Field fieldtemp : fields) {
             fieldtemp.setAccessible(true);
             Class fieldClz = fieldtemp.getType();
+            if (Modifier.isFinal(fieldClz.getModifiers())) {
+                continue;
+            }
             try {
                 // Init basic type
                 if (isPrimitive(fieldClz)) {
