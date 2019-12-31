@@ -140,7 +140,7 @@ public class ObjectTestUtilNew {
             return "\"" + RandomUtil.randomStr(8) + "\"";
         }
         if (BigDecimal.class.equals(fieldClz)) {
-            return " new BigDecimal(num) ";
+            return " new BigDecimal() ";
         }
         if (Enum.class.isAssignableFrom(fieldClz)) {
             Enum[] enums = (Enum[]) fieldClz.getEnumConstants();

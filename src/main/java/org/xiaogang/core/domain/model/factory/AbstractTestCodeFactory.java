@@ -1,11 +1,15 @@
 package org.xiaogang.core.domain.model.factory;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.xiaogang.core.domain.model.JavaSourceFile;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
-
-import java.util.*;
 
 /**
  * 描述:
@@ -65,9 +69,7 @@ public abstract class AbstractTestCodeFactory {
         this.importList.add(enter);
         this.importList.addAll(jsf.getImportList());
 
-
     }
-
 
     protected void setPkg() {
         pkg = Optional.ofNullable(jsf.getPkg()).map(t -> "package " + t.replace(".main.", ".test.") + sep).orElse("");
@@ -94,7 +96,7 @@ public abstract class AbstractTestCodeFactory {
         sb.append(enter);
         if (CollectionUtils.isNotEmpty(fieldList)) {
             for (String s : fieldList) {
-                sb.append(s.trim() + enter);
+                sb.append(s + enter);
             }
         }
         sb.append(enter);
@@ -119,7 +121,9 @@ public abstract class AbstractTestCodeFactory {
         sb.append(enter + initInstance() + enter);
         for (Method method : jsf.getMethodList()) {
             sb.append(enter + space4 + "@Test");
-            sb.append(enter + space4 + "public void test" + method.getName().substring(0, 1).toUpperCase() + method.getName().substring(1) + "(){ " + enter);
+            sb.append(
+                enter + space4 + "public void test" + method.getName().substring(0, 1).toUpperCase() + method.getName()
+                    .substring(1) + "(){ " + enter);
             sb.append(invoke(ModelEnum.DDD_Model, method));
             sb.append(space8 + verify(ModelEnum.DDD_Model, method));
             sb.append(enter + space8 + "//Write the Assert code" + enter);

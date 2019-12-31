@@ -10,7 +10,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiUtilBase;
 import org.xiaogang.core.application.JavaSourceFileApplication;
 
-
 /**
  * created by xiaogangfan on 2019/9/7.
  */
@@ -20,6 +19,14 @@ public class AutoGenerationTestCode extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         String result = "成功";
         try {
+            //new Main().start();
+            //            JButton testButton = new JButton();
+            //            testButton.addActionListener(actionEvent -> {
+            //                if (new SampleDialogWrapper().showAndGet()) {
+            //                    System.out.println();
+            //                }
+            //            });
+
             // Get path of the file or dir.
             String path = queryPath(e);
             // Generate file
@@ -56,4 +63,5 @@ public class AutoGenerationTestCode extends AnAction {
         }
         throw new RuntimeException("获取路径错误");
     }
+
 }

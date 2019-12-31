@@ -11,15 +11,25 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+<!--    <extensions defaultExtensionNs="com.intellij">-->
+<!--        <toolWindow id="My Sample Tool Window" anchor="right" factoryClass="org.xiaogang.action.toolwindlows.MyToolWindowFactory" />-->
+<!--    </extensions>-->
 
     <actions>
+<!--        <action id="org.intellij.sdk.action.PopupDialogAction" class="org.xiaogang.action.PopupDialogAction"-->
+<!--                text="Pop Dialog Action" description="SDK action example" >-->
+<!--            <keyboard-shortcut first-keystroke="control alt A" second-keystroke="C" keymap="$default"/>-->
+<!--            <mouse-shortcut keystroke="control button3 doubleClick" keymap="$default"/>-->
+<!--            <add-to-group group-id="ToolsMenu" anchor="first"/>-->
+<!--        </action>-->
+
+
         <action id="AutoGenerationTestCode.ID" class="org.xiaogang.action.AutoGenerationTestCode"
                 text="Auto Generation Test Code" description="Automatic Generation of Unit Test Code  ">
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>
+<!--            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>-->
         </action>
+
+
     </actions>
 </idea-plugin>

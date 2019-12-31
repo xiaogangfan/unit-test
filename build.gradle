@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.xiaogang'
-version '1.0.1-SNAPSHOT'
+version '0.0.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -18,7 +18,6 @@ dependencies {
     compile 'com.github.javaparser:javaparser-core:3.6.5'
     compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
     compile 'org.apache.commons:commons-lang3:3.8.1'
-
     compile 'org.projectlombok:lombok:1.18.10'
 
     testCompile 'junit:junit:4.12'
