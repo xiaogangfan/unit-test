@@ -1,8 +1,5 @@
 package org.xiaogang.util;
 
-import com.google.common.collect.Lists;
-import net.sf.cglib.core.ReflectUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -11,14 +8,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import net.sf.cglib.core.ReflectUtils;
+
 public class ObjectTestUtilNew {
 
+    public static final String enter = "\n";
+    public static final String space8 = "        ";
 
     public static <T> T newObjectWithPropertiesValue(Class<T> clz, Boolean isRecu) {
         if (isPrimitive(clz) && !isRecu) {
-            return (T) initPrimitiveValue(clz);
+            return (T)initPrimitiveValue(clz);
         }
-        T obj = (T) ReflectUtils.newInstance(clz);
+        T obj = (T)ReflectUtils.newInstance(clz);
         Field[] fields = clz.getDeclaredFields();
         for (Field fieldtemp : fields) {
             fieldtemp.setAccessible(true);
@@ -45,12 +47,13 @@ public class ObjectTestUtilNew {
                 }
                 // 如果是泛型参数的类型
                 if (genericType instanceof ParameterizedType
-                        && fieldClz.equals(List.class)) {
-                    ParameterizedType pt = (ParameterizedType) genericType;
+                    && fieldClz.equals(List.class)) {
+                    ParameterizedType pt = (ParameterizedType)genericType;
                     //得到泛型里的class类型对象
-                    Class<?> accountPrincipalApproveClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                    Class<?> accountPrincipalApproveClazz = (Class<?>)pt.getActualTypeArguments()[0];
                     if (!isRecu) {
-                        fieldtemp.set(obj, Lists.newArrayList(newObjectWithPropertiesValue(accountPrincipalApproveClazz, true)));
+                        fieldtemp.set(obj,
+                            Lists.newArrayList(newObjectWithPropertiesValue(accountPrincipalApproveClazz, true)));
                     }
                     continue;
                 }
@@ -100,7 +103,7 @@ public class ObjectTestUtilNew {
             return new BigDecimal(num);
         }
         if (Enum.class.isAssignableFrom(fieldClz)) {
-            Enum[] enums = (Enum[]) fieldClz.getEnumConstants();
+            Enum[] enums = (Enum[])fieldClz.getEnumConstants();
             int i = RandomUtil.randomInt(enums.length);
             return enums[i];
         }
@@ -143,7 +146,7 @@ public class ObjectTestUtilNew {
             return " new BigDecimal() ";
         }
         if (Enum.class.isAssignableFrom(fieldClz)) {
-            Enum[] enums = (Enum[]) fieldClz.getEnumConstants();
+            Enum[] enums = (Enum[])fieldClz.getEnumConstants();
             int i = RandomUtil.randomInt(enums.length);
             return enums[i];
         }
@@ -152,7 +155,6 @@ public class ObjectTestUtilNew {
         }
         return null;
     }
-
 
     private static <T> boolean isPrimitive(Class<T> fieldClz) {
         if (Long.class.equals(fieldClz) || long.class.equals(fieldClz)) {
@@ -206,35 +208,35 @@ public class ObjectTestUtilNew {
         return newObjectWithPropertiesValue(clz, false);
     }
 
-
     public static <T> void initProcess(Class<T> clz, StringBuffer sb) {
         initProcess(clz, false, sb);
     }
 
-    public static final String enter = ";\n";
-    public static final String space8 = "        ";
-
     public static <T> T initProcess(Class<T> clz, Boolean isRecu, StringBuffer sb) {
-        T obj = (T) ReflectUtils.newInstance(clz);
+        T obj = (T)ReflectUtils.newInstance(clz);
         Field[] fields = clz.getDeclaredFields();
         String className = getClassName(clz.getName());
-        sb.append(space8 + className + " " + className.toLowerCase() + " = new " + className + "()" + enter);
+        sb.append(enter + space8 + className + " " + className.toLowerCase() + " = new " + className + "()");
         for (Field fieldtemp : fields) {
             fieldtemp.setAccessible(true);
             Class fieldClz = fieldtemp.getType();
             try {
                 // Init basic type
                 if (isPrimitive(fieldClz)) {
-//                    fieldtemp.set(obj, initPrimitiveValue(fieldClz));
-                    sb.append(space8 + className.toLowerCase() + ".set" + fieldtemp.getName().substring(0, 1).toUpperCase() + fieldtemp.getName().substring(1) + "(" + initPrimitiveValueProcess(fieldClz) + ")" + enter);
+                    //                    fieldtemp.set(obj, initPrimitiveValue(fieldClz));
+                    sb.append(
+                        enter + space8 + className.toLowerCase() + ".set" + StringUtil.firstUpper(fieldtemp.getName())
+                            + "(" + initPrimitiveValueProcess(fieldClz) + ")");
                     continue;
                 }
 
                 // Init javabean
                 if (!isJavaClass(fieldClz)) {
-//                    fieldtemp.set(obj, newObjectWithPropertiesValue(fieldClz, true));
+                    //                    fieldtemp.set(obj, newObjectWithPropertiesValue(fieldClz, true));
                     initProcess(fieldClz, isRecu, sb);
-                    sb.append(space8 + className.toLowerCase() + ".set" + fieldtemp.getName().substring(0, 1).toUpperCase() + fieldtemp.getName().substring(1) + "(" + fieldtemp.getName().toLowerCase() + ")" + enter);
+                    sb.append(
+                        enter + space8 + className.toLowerCase() + ".set" + StringUtil.firstUpper(fieldtemp.getName())
+                            + "(" + StringUtil.firstLower(fieldtemp.getName()) + ");");
                     continue;
                 }
 
@@ -244,12 +246,13 @@ public class ObjectTestUtilNew {
                 }
                 // 如果是泛型参数的类型
                 if (genericType instanceof ParameterizedType
-                        && fieldClz.equals(List.class)) {
-                    ParameterizedType pt = (ParameterizedType) genericType;
+                    && fieldClz.equals(List.class)) {
+                    ParameterizedType pt = (ParameterizedType)genericType;
                     //得到泛型里的class类型对象
-                    Class<?> accountPrincipalApproveClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                    Class<?> accountPrincipalApproveClazz = (Class<?>)pt.getActualTypeArguments()[0];
                     if (!isRecu) {
-                        fieldtemp.set(obj, Lists.newArrayList(newObjectWithPropertiesValue(accountPrincipalApproveClazz, true)));
+                        fieldtemp.set(obj,
+                            Lists.newArrayList(newObjectWithPropertiesValue(accountPrincipalApproveClazz, true)));
                     }
                     continue;
                 }

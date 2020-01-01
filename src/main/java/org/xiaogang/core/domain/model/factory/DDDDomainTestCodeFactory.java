@@ -6,7 +6,8 @@ import org.apache.commons.lang.StringUtils;
 import org.xiaogang.core.domain.model.JavaSourceFile;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
-import org.xiaogang.util.ObjectTestUtilNew;
+import org.xiaogang.util.StringUtil;
+import org.xiaogang.util.TestCodeUtil;
 
 /**
  * 描述:
@@ -24,22 +25,22 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
         StringBuffer sb = new StringBuffer();
 
         importList.add("import org.junit.Before;");
-        sb.append(enter);
         fieldList.add(
-            space4 + jsf.getName() + " " + jsf.getName().substring(0, 1).toLowerCase() + jsf.getName().substring(1)
+            space4 + jsf.getName() + " " + jsf.getVarName()
                 + " = null;");
-        sb.append(enter);
-        sb.append(space4 + "@Before" + enter);
-        sb.append(space4 + "public void initInstance(){" + enter);
-        sb.append(space8 + "// Initialize the object to be tested" + sep);
+        sb.append(enter + space4 + "@Before");
+        sb.append(enter + space4 + "public void initInstance() {");
+        sb.append(enter + space8 + "// Initialize the object to be tested");
         try {
-            Class clz = Class.forName(jsf.getPkg() + "." + jsf.getName());
-            ObjectTestUtilNew.initProcess(clz, sb);
+            //Class clz = Class.forName(jsf.getPkg() + "." + jsf.getName());
+            //ObjectTestUtilNew.initProcess(clz, sb);
+            sb.append(enter + space8 + jsf.getVarName() + " = ObjectInit.random(" + jsf.getName() + ".class)" + sep);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        sb.append(space4 + "}" + enter);
+        sb.append(enter + space4 + "}");
         return sb.toString();
     }
 
@@ -48,35 +49,63 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
     }
 
     @Override
-    protected String invoke(ModelEnum ddd_model, Method method) {
+    protected String writeInvoke(ModelEnum ddd_model, Method method) {
         if (StringUtils.isNotBlank(jsf.getPkg())) {
-            //            importList.add("import " + jsf.getPkg() + "." + jsf.getName() + sep);
-
         }
         String methodParams = "";
         StringBuilder methodBody = new StringBuilder();
 
         // 实例化待测试的实例
         String instansVarName = jsf.getName().toLowerCase();
-        //        methodBody.append(space8 + "// Initialize the object to be tested" + sep);
-        //        methodBody.append(space8 + jsf.getName() + " " + instansVarName + " = ObjectTestUtilNew
-        //        .newObjectWithPropertiesValue(" + jsf.getName() + ".class)" + sep + enter);
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
-            methodBody.append(space8 + "// Initialize params of the method" + sep);
+            methodBody.append(enter + space8 + "// Initialize params of the method" + sep);
+            importList.add("import unit.test.api.ObjectInit" + sep);
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
-                methodBody.append(space8 + param.getType() + " " + param.getName()
+                methodBody.append(enter + space8 + param.getType() + " " + param.getName()
                     + " = ObjectInit.random(" + param.getType() + ".class)" + sep);
-                methodParams += param.getName() + ",";
-                //                importList.add("import " + param.getType() + sep);
-                importList.add("import unit.test.api.ObjectInit" + sep);
+                if (method.getParamList().size() - 1 == i) {
+                    methodParams += param.getName() + ",";
+                } else {
+                    methodParams += param.getName() + ", ";
+                }
             }
         }
         methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
+        if (!method.getType().isVoidType()) {
+            String resultType = StringUtil.firstUpper(method.getType().asString());
+            methodBody.append(
+                enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
+                    + methodParams + ")" + sepAndenter);
+        } else {
+            methodBody.append(
+                enter + space8 + instansVarName + "." + method.getName() + "("
+                    + methodParams + ")" + sepAndenter);
+        }
 
-        methodBody.append(enter + space8 + instansVarName + "." + method.getName() + "(" + methodParams + ")" + sep);
         return methodBody.toString();
+    }
+
+    @Override
+    protected String writeAssert(ModelEnum ddd_model, Method method) {
+        StringBuilder assertStr = new StringBuilder();
+        if (method.getType().isVoidType()) {
+            importList.add(TestCodeUtil.IMPO_ASSERT + sep);
+            if (method.getParamList().size() == 0) {
+                assertStr.append(enter + space8 + TestCodeUtil.ASSERTTRUE + sep);
+            }
+            for (Parameter parameter : method.getParamList()) {
+                if (parameter.getType().isReferenceType()) {
+                    assertStr.append(enter + space8 + TestCodeUtil.EQUALS + sep);
+                }
+            }
+
+        } else {
+            assertStr.append(enter + space8 + TestCodeUtil.EQUALS + sep);
+            assertStr.append(enter + space8 + TestCodeUtil.RESULTASSERT + sep);
+        }
+        return assertStr.toString();
     }
 
 }

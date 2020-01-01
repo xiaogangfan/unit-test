@@ -30,7 +30,7 @@ public abstract class AbstractBuilder {
     protected StringBuilder generateMethod() {
         StringBuilder sb = new StringBuilder();
         for (Method method : javaSourceFile.getMethodList()) {
-            sb.append("public void test" + method.getName() + "(){ ");
+            sb.append("public void test" + method.getName() + "() { ");
             sb.append("}");
         }
         return null;

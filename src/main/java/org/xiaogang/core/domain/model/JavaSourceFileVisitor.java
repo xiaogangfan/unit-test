@@ -1,18 +1,19 @@
 package org.xiaogang.core.domain.model;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * 描述:
@@ -27,6 +28,8 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
         method.setBody(n.getBody().toString());
         method.setName(n.getName().toString());
         method.setParamList(n.getParameters());
+        method.setReturnType(n.getType().asString());
+        method.setType(n.getType());
         NodeList<TypeParameter> typeParameters = n.getTypeParameters();
         Iterator<TypeParameter> iterator = typeParameters.iterator();
         while (iterator.hasNext()) {
@@ -84,12 +87,23 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
             if (p.getNameAsString().contains("lombok")) {
                 return;
             }
-            arg.getImportList().add("import " + p.getNameAsString() + "; \n ");
+            if (p.getNameAsString().contains("*")) {
+                arg.getImportList().add("import " + p.getName() + "*;");
+                return;
+            }
+            arg.getImportList().add("import " + p.getName() + ";");
         });
-//        n.getModule().ifPresent(l -> l.accept(this, arg));
-//        n.getPackageDeclaration().ifPresent(l -> l.accept(this, arg));
-//        n.getTypes().forEach(p -> p.accept(this, arg));
-//        n.getComment().ifPresent(l -> l.accept(this, arg));
+        //        n.getModule().ifPresent(l -> l.accept(this, arg));
+        //        n.getPackageDeclaration().ifPresent(l -> l.accept(this, arg));
+        //        n.getTypes().forEach(p -> p.accept(this, arg));
+        //        n.getComment().ifPresent(l -> l.accept(this, arg));
+        super.visit(n, arg);
+    }
+
+    @Override
+    public void visit(final ReturnStmt n, JavaSourceFile arg) {
+        n.getExpression().ifPresent(l -> l.accept(this, arg));
+        n.getComment().ifPresent(l -> l.accept(this, arg));
         super.visit(n, arg);
     }
 }

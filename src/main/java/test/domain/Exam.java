@@ -1,13 +1,12 @@
 package test.domain;
 
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.xiaogang.core.domain.model.JavaSourceFile;
-
-import java.util.Date;
 
 /**
  * 描述:
@@ -32,11 +31,11 @@ public class Exam {
     private Integer viewAnswer;
     private JavaSourceFile javaSourceFile;
 
-    public boolean paramStr(String str, Exam e, JavaSourceFile j) {
+    public Exam paramStr(String str, Exam e, JavaSourceFile j) {
         if (viewAnswer == null) {
-            return false;
+            return null;
         }
-        return viewAnswer == 1;
+        return this;
     }
 
     public boolean canViewAnswer() {
@@ -44,5 +43,13 @@ public class Exam {
             return false;
         }
         return viewAnswer == 1;
+    }
+
+    public void nore() {
+
+    }
+
+    public Integer digi() {
+        return 0;
     }
 }

@@ -19,6 +19,7 @@ dependencies {
     compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
     compile 'org.apache.commons:commons-lang3:3.8.1'
     compile 'org.projectlombok:lombok:1.18.10'
+//    compile 'com.alibaba.cro:unit-test-api:1.0.0-SNAPSHOT'
 
     testCompile 'junit:junit:4.12'
     testCompile 'io.github.benas:random-beans:3.6.0'

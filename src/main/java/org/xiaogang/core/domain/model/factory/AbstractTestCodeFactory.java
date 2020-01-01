@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.xiaogang.core.domain.model.JavaSourceFile;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
+import org.xiaogang.util.StringUtil;
 
 /**
  * 描述:
@@ -18,8 +19,10 @@ import org.xiaogang.core.domain.model.ModelEnum;
  * @create 2019-09-09 6:01 PM
  */
 public abstract class AbstractTestCodeFactory {
-    public static final String sep = "; \n";
+    public static final String sep = ";";
     public static final String enter = "\n";
+    public static final String enter2 = "\n \n";
+    public static final String sepAndenter = ";\n";
     public static final String impo = "import";
     public static final String tab = "  ";
     public static final String space4 = "    ";
@@ -88,18 +91,17 @@ public abstract class AbstractTestCodeFactory {
         sb.append(pkg);
         if (CollectionUtils.isNotEmpty(importList)) {
             for (String s : importList) {
-                sb.append(s.trim() + enter);
+                sb.append(enter + s.trim());
             }
         }
-
+        sb.append(enter2);
         sb.append(classHeader + "{");
-        sb.append(enter);
+
         if (CollectionUtils.isNotEmpty(fieldList)) {
             for (String s : fieldList) {
-                sb.append(s + enter);
+                sb.append(enter + s);
             }
         }
-        sb.append(enter);
         sb.append(classBody);
         sb.append(enter + "}");
         return sb.toString();
@@ -118,15 +120,15 @@ public abstract class AbstractTestCodeFactory {
         if (CollectionUtils.isEmpty(jsf.getMethodList())) {
             return "";
         }
-        sb.append(enter + initInstance() + enter);
+        sb.append(enter + initInstance());
         for (Method method : jsf.getMethodList()) {
-            sb.append(enter + space4 + "@Test");
+            sb.append(enter2 + space4 + "@Test");
             sb.append(
-                enter + space4 + "public void test" + method.getName().substring(0, 1).toUpperCase() + method.getName()
-                    .substring(1) + "(){ " + enter);
-            sb.append(invoke(ModelEnum.DDD_Model, method));
+                enter + space4 + "public void test" + StringUtil.firstUpper(method.getName()) + "() { ");
+            sb.append(writeInvoke(ModelEnum.DDD_Model, method));
             sb.append(space8 + verify(ModelEnum.DDD_Model, method));
-            sb.append(enter + space8 + "//Write the Assert code" + enter);
+            sb.append(enter + space8 + "// Write the Assert code");
+            sb.append(writeAssert(ModelEnum.DDD_Model, method));
             sb.append(enter + space4 + "}");
         }
         return sb.toString();
@@ -138,9 +140,13 @@ public abstract class AbstractTestCodeFactory {
         return "";
     }
 
-    protected String invoke(ModelEnum ddd_model, Method method) {
+    protected String writeInvoke(ModelEnum ddd_model, Method method) {
         StringBuilder sb = new StringBuilder();
-        //sb.append(jsf.getName()+" "+)
         return "";
+    }
+
+    protected String writeAssert(ModelEnum ddd_model, Method method) {
+        StringBuilder sb = new StringBuilder();
+        return sb.toString();
     }
 }
