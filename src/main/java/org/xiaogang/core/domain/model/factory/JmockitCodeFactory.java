@@ -9,8 +9,8 @@ import org.xiaogang.core.domain.model.Method;
  * @author xiaogangfan
  * @create 2019-09-09 6:01 PM
  */
-public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
-    public DDDDomainTestCodeFactory(JavaSourceFile jsf) {
+public class JmockitCodeFactory extends AbstractTestCodeFactory {
+    public JmockitCodeFactory(JavaSourceFile jsf) {
         this.jsf = jsf;
     }
 
@@ -28,7 +28,8 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
         try {
             //Class clz = Class.forName(jsf.getPkg() + "." + jsf.getName());
             //ObjectTestUtilNew.initProcess(clz, sb);
-            sb.append(enter + space8 + jsf.getVarName() + " = ObjectInit.random(" + jsf.getName() + ".class)" + sep);
+            sb.append(enter + space8 + jsf.getVarName() + " = new " + jsf.getName() + "()" + sep);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,7 +38,7 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
         return sb.toString();
     }
 
-    public DDDDomainTestCodeFactory() {
+    public JmockitCodeFactory() {
         super();
     }
 

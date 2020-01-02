@@ -14,6 +14,7 @@ import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 描述:
@@ -87,16 +88,16 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
             if (p.getNameAsString().contains("lombok")) {
                 return;
             }
-            if (p.getNameAsString().contains("*")) {
-                arg.getImportList().add("import " + p.getName() + "*;");
-                return;
+            // 解决javaparser在处理import中带*的问题
+            int i = p.getName().asString().lastIndexOf(".");
+            String substring = p.getName().asString().substring(i + 1, i + 2);
+            if (StringUtils.equals(substring, substring.toLowerCase())) {
+                arg.getImportList().add("import " + (p.isStatic() ? "static" : "") + p.getName() + ".*;");
+            } else {
+                arg.getImportList().add("import " + (p.isStatic() ? "static " : "") + p.getName() + ";");
             }
-            arg.getImportList().add("import " + p.getName() + ";");
+
         });
-        //        n.getModule().ifPresent(l -> l.accept(this, arg));
-        //        n.getPackageDeclaration().ifPresent(l -> l.accept(this, arg));
-        //        n.getTypes().forEach(p -> p.accept(this, arg));
-        //        n.getComment().ifPresent(l -> l.accept(this, arg));
         super.visit(n, arg);
     }
 

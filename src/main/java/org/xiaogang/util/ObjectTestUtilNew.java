@@ -216,7 +216,7 @@ public class ObjectTestUtilNew {
         T obj = (T)ReflectUtils.newInstance(clz);
         Field[] fields = clz.getDeclaredFields();
         String className = getClassName(clz.getName());
-        sb.append(enter + space8 + className + " " + className.toLowerCase() + " = new " + className + "()");
+        sb.append(enter + space8 + className + " " + StringUtil.firstLower(className) + " = new " + className + "()");
         for (Field fieldtemp : fields) {
             fieldtemp.setAccessible(true);
             Class fieldClz = fieldtemp.getType();
@@ -225,7 +225,8 @@ public class ObjectTestUtilNew {
                 if (isPrimitive(fieldClz)) {
                     //                    fieldtemp.set(obj, initPrimitiveValue(fieldClz));
                     sb.append(
-                        enter + space8 + className.toLowerCase() + ".set" + StringUtil.firstUpper(fieldtemp.getName())
+                        enter + space8 + StringUtil.firstLower(className) + ".set" + StringUtil
+                            .firstUpper(fieldtemp.getName())
                             + "(" + initPrimitiveValueProcess(fieldClz) + ")");
                     continue;
                 }
@@ -235,7 +236,8 @@ public class ObjectTestUtilNew {
                     //                    fieldtemp.set(obj, newObjectWithPropertiesValue(fieldClz, true));
                     initProcess(fieldClz, isRecu, sb);
                     sb.append(
-                        enter + space8 + className.toLowerCase() + ".set" + StringUtil.firstUpper(fieldtemp.getName())
+                        enter + space8 + StringUtil.firstLower(className) + ".set" + StringUtil
+                            .firstUpper(fieldtemp.getName())
                             + "(" + StringUtil.firstLower(fieldtemp.getName()) + ");");
                     continue;
                 }

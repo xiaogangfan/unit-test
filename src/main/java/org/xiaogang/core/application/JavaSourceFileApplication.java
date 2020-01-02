@@ -1,17 +1,21 @@
 package org.xiaogang.core.application;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.List;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.google.common.collect.Lists;
-
 import org.xiaogang.core.domain.model.JavaSourceFile;
 import org.xiaogang.core.domain.model.JavaSourceFileVisitor;
-import org.xiaogang.core.domain.model.ModelEnum;
 import org.xiaogang.core.domain.model.factory.AbstractTestCodeFactory;
-
-import java.io.*;
-import java.util.List;
 
 /**
  * 描述:
@@ -53,7 +57,7 @@ public class JavaSourceFileApplication {
                 jsf.setPathName(fileName);
 
                 cu.accept(new JavaSourceFileVisitor(), jsf);
-//                jsf.setClassName()
+                //                jsf.setClassName()
                 javaSourceFileList.add(jsf);
             }
         } catch (Exception e) {
@@ -66,10 +70,10 @@ public class JavaSourceFileApplication {
     public static void main(String[] args) throws FileNotFoundException {
         List<String> fileNames = Lists.newArrayList();
         JavaSourceFileApplication.findFileList(
-                new File(
-                        "/Users/xiaogangfan/Documents/ddd/auto-unittest-code/src/main/shishang/action/AutoGenerationTestCode"
-                                + ".java")
-                , fileNames
+            new File(
+                "/Users/xiaogangfan/Documents/ddd/auto-unittest-code/src/main/shishang/action/AutoGenerationTestCode"
+                    + ".java")
+            , fileNames
         );
         List<JavaSourceFile> javaSourceFileList = parse(fileNames);
 
@@ -123,15 +127,15 @@ public class JavaSourceFileApplication {
     }
 
     private static String generateTestFileString(JavaSourceFile javaSourceFile) {
-        AbstractTestCodeFactory factory = AbstractTestCodeFactory.create(ModelEnum.DDD_Model, javaSourceFile);
+        AbstractTestCodeFactory factory = AbstractTestCodeFactory.create(javaSourceFile);
         return factory.createFileString();
     }
 
     public static void generateFiles(String path) {
         List<String> fileNames = Lists.newArrayList();
         findFileList(
-                new File(path)
-                , fileNames
+            new File(path)
+            , fileNames
         );
         List<JavaSourceFile> javaSourceFileList = parse(fileNames);
 
