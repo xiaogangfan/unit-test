@@ -1,7 +1,7 @@
 ### 单测的本质
 - 是要去发现代码中的问题。
 
-### 现实中，单测环节中可能存在的问题
+### 现实中，写单测环节中可能存在的问题
 #### 效率方面
 - 手动代码低效，特别是代码重构的时候
 - 有些情况对象稍微大一些，我们就得不停的手动set，耗费大量时间
@@ -10,7 +10,7 @@
 - 单测不严谨，等于没有
 
 ### 对标
-JUnitGenerator V2.0
+该项目对标JUnitGenerator V2.0
 ### 优劣势
 - 优势
     - 较JUnitGenerator V2.0显著提升研发效率。生成代码的调用，和猜测的验证
@@ -48,6 +48,7 @@ JUnitGenerator V2.0
     - 私有方法处理
         - 通过反射将access变成true，调用
     - 常规方法处理
+
 #### 如何写断言
 - 根据返回值类型
     - void 
@@ -63,7 +64,7 @@ JUnitGenerator V2.0
 - 如何做成一款产品，卖出去
 
 ### 插件安装
-地址（先下载，从磁盘安装）：https://plugins.jetbrains.com/plugin/13408-generate-unit-test-code
+地址（先下载，从磁盘安装）：https://plugins.jetbrains.com/plugin/13408-generate-unit-test-code/versions
 
 ### 如何使用
 - 添加pom:配套的pom：主要用来配合生成单测的代码
@@ -153,5 +154,5 @@ public boolean canGoWorld(String batchId) {
 ```
 
 
-### 如何贡献
-源码： github：git@github.com:xiaogangfan/unit-test.git
+### 源码
+github：git@github.com:xiaogangfan/unit-test.git
