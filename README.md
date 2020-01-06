@@ -126,6 +126,7 @@ public class Exam {
 }
 ```
 ![](https://img2018.cnblogs.com/blog/827161/202001/827161-20200106150347575-1292812196.png)
+
 生成后的单测如下：
 ```
 import org.junit.Test;
