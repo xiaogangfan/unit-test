@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.xiaogang.core.domain.model.JavaSourceFile;
 
 /**
  * 描述:
@@ -30,7 +29,7 @@ public class Exam {
     private String status;
     private Integer viewAnswer;
 
-    public Exam paramStr(String str, Exam e, JavaSourceFile j) {
+    public Exam paramStr(String str, Exam e) {
         if (viewAnswer == null) {
             return null;
         }
