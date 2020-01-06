@@ -75,6 +75,8 @@ JUnitGenerator V2.0
 </dependency> 
 ```
 - 在要测试的代码中，右键，选择自动生成代码，参见截图
+![](https://github.com/xiaogangfan/unit-test/blob/master/img/plugin_use.jpg)
+
 ```
 import java.util.Date;
 
@@ -125,7 +127,7 @@ public class Exam {
     }
 }
 ```
-![](https://img2018.cnblogs.com/blog/827161/202001/827161-20200106150347575-1292812196.png)
+
 
 生成后的单测如下：
 ```
@@ -192,9 +194,7 @@ public class ExamTest {
 }
 ```
 
-
-
-
-
 ### 如何贡献
 源码： github：git@github.com:xiaogangfan/unit-test.git
+
+
