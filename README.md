@@ -62,6 +62,8 @@ JUnitGenerator V2.0
 - 将基本的api开放，通过集成，使用者根据自己的情况编写模板
 - 如何做成一款产品，卖出去
 
+### 插件安装
+地址：https://plugins.jetbrains.com/plugin/13408-generate-unit-test-code（先下载，从磁盘安装）
 
 ### 如何使用
 - 添加pom:配套的pom：主要用来配合生成单测的代码
