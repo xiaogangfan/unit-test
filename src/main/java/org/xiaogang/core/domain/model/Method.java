@@ -1,7 +1,11 @@
 package org.xiaogang.core.domain.model;
 
+import java.util.Optional;
+
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +30,9 @@ public class Method {
     private String returnType;
     private Type type;
     private String body;
+    private Optional<BlockStmt> originBody;
 
     private NodeList<Parameter> paramList;
+    private MethodDeclaration methodDeclaration;
 
 }

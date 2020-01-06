@@ -1,5 +1,9 @@
 package org.xiaogang.action;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -19,15 +23,6 @@ public class AutoGenerationTestCode extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         String result = "成功";
         try {
-            //new Main().start();
-            //            JButton testButton = new JButton();
-            //            testButton.addActionListener(actionEvent -> {
-            //                if (new SampleDialogWrapper().showAndGet()) {
-            //                    System.out.println();
-            //                }
-            //            });
-
-            // Get path of the file or dir.
             String path = queryPath(e);
             // Generate file
             generateFiles(path);
@@ -64,4 +59,13 @@ public class AutoGenerationTestCode extends AnAction {
         throw new RuntimeException("获取路径错误");
     }
 
+    protected JComponent createCenterPanel() {
+        JPanel dialogPanel = new JPanel(new BorderLayout());
+
+        JLabel label = new JLabel("testing");
+        label.setPreferredSize(new Dimension(100, 100));
+        dialogPanel.add(label, BorderLayout.CENTER);
+
+        return dialogPanel;
+    }
 }

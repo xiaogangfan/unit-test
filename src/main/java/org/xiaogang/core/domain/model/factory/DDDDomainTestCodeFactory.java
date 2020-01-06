@@ -18,8 +18,8 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
     protected String initInstance() {
         StringBuffer sb = new StringBuffer();
 
-        importList.add("import org.junit.Before;");
-        fieldList.add(
+        importSet.add("import org.junit.Before;");
+        fieldSet.add(
             space4 + jsf.getName() + " " + jsf.getVarName()
                 + " = null;");
         sb.append(enter + space4 + "@Before");
@@ -42,13 +42,13 @@ public class DDDDomainTestCodeFactory extends AbstractTestCodeFactory {
     }
 
     @Override
-    protected String writeInvoke(Method method) {
-        return super.writeInvoke(method);
+    protected String writeMethodInvoke(Method method) {
+        return super.writeMethodInvoke(method);
     }
 
     @Override
-    protected String writeAssert(Method method) {
-        return super.writeAssert(method);
+    protected String writeMethodAssert(Method method) {
+        return super.writeMethodAssert(method);
     }
 
 }

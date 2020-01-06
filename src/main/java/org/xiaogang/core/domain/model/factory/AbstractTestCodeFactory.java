@@ -30,12 +30,14 @@ public abstract class AbstractTestCodeFactory {
     public static final String tab = "  ";
     public static final String space4 = "    ";
     public static final String space8 = "        ";
+    public static final String space12 = "            ";
 
     protected JavaSourceFile jsf = null;
 
     protected String pkg;
-    protected Set<String> importList = new HashSet<>();
-    protected Set<String> fieldList = new HashSet<>();
+    protected Set<String> importSet = new HashSet<>();
+    protected Set<String> fieldSet = new HashSet<>();
+    protected Set<String> methodSet = new HashSet<>();
     protected String classHeader;
     protected String classBody;
     protected String implementInterface;
@@ -73,7 +75,7 @@ public abstract class AbstractTestCodeFactory {
         setImport();
         setClassHeader();
         setFields();
-        setClassBody();
+        setMethods();
 
         return generateTestFileString();
     }
@@ -82,10 +84,10 @@ public abstract class AbstractTestCodeFactory {
     }
 
     protected void setImport() {
-        this.importList.add(impo + " static org.junit.Assert.*;");
-        this.importList.add(impo + " org.junit.Test;");
-        this.importList.add(enter);
-        this.importList.addAll(jsf.getImportList());
+        this.importSet.add(impo + " static org.junit.Assert.*;");
+        this.importSet.add(impo + " org.junit.Test;");
+        this.importSet.add(enter);
+        this.importSet.addAll(jsf.getImportList());
 
     }
 
@@ -97,27 +99,42 @@ public abstract class AbstractTestCodeFactory {
         classHeader = "public class " + jsf.getName() + "Test ";
     }
 
-    protected void setClassBody() {
-        classBody = generateMethod();
+    protected void setMethods() {
+        methodSet.add(initInstance());
+        for (Method method : jsf.getMethodList()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(writeMethodHeader(method));
+            sb.append(writeMethodMock(method));
+            sb.append(writeMethodInvoke(method));
+            //sb.append(space8 + verify(ModelEnum.DDD_Model, method));
+            sb.append(writeMethodAssert(method));
+            sb.append(writeMethodFooter());
+            methodSet.add(sb.toString());
+        }
     }
 
     public String generateTestFileString() {
         StringBuilder sb = new StringBuilder();
         sb.append(pkg);
-        if (CollectionUtils.isNotEmpty(importList)) {
-            for (String s : importList) {
+        if (CollectionUtils.isNotEmpty(importSet)) {
+            for (String s : importSet) {
                 sb.append(enter + s.trim());
             }
         }
         sb.append(enter2);
         sb.append(classHeader + "{");
 
-        if (CollectionUtils.isNotEmpty(fieldList)) {
-            for (String s : fieldList) {
+        if (CollectionUtils.isNotEmpty(fieldSet)) {
+            for (String s : fieldSet) {
                 sb.append(enter + s);
             }
         }
-        sb.append(classBody);
+
+        if (CollectionUtils.isNotEmpty(methodSet)) {
+            for (String s : methodSet) {
+                sb.append(enter + s);
+            }
+        }
         sb.append(enter + "}");
         return sb.toString();
     }
@@ -126,36 +143,31 @@ public abstract class AbstractTestCodeFactory {
         return new ArrayList<>();
     }
 
-    public String generateClassBody() {
-        return generateMethod();
+    protected String writeMethodMock(Method method) {
+        return "";
     }
 
-    protected String generateMethod() {
-        StringBuilder sb = new StringBuilder();
-        if (CollectionUtils.isEmpty(jsf.getMethodList())) {
-            return "";
-        }
-        sb.append(enter + initInstance());
-        for (Method method : jsf.getMethodList()) {
-            sb.append(enter2 + space4 + "@Test");
-            sb.append(
-                enter + space4 + "public void test" + StringUtil.firstUpper(method.getName()) + "() { ");
-            sb.append(writeInvoke(method));
-            sb.append(space8 + verify(ModelEnum.DDD_Model, method));
-            sb.append(enter + space8 + "// Write the Assert code");
-            sb.append(writeAssert(method));
-            sb.append(enter + space4 + "}");
-        }
-        return sb.toString();
+    protected String writeMethodFooter() {
+        return enter + space4 + "}";
     }
 
-    protected abstract String initInstance();
+    protected String writeMethodHeader(Method method) {
+        StringBuffer methodHeader = new StringBuffer();
+        methodHeader.append(enter2 + space4 + "@Test");
+        methodHeader.append(
+            enter + space4 + "public void test" + StringUtil.firstUpper(method.getName()) + "() { ");
+        return methodHeader.toString();
+    }
+
+    protected String initInstance() {
+        return "";
+    }
 
     protected String verify(ModelEnum ddd_model, Method method) {
         return "";
     }
 
-    protected String writeInvoke(Method method) {
+    protected String writeMethodInvoke(Method method) {
         if (StringUtils.isNotBlank(jsf.getPkg())) {
         }
 
@@ -167,7 +179,7 @@ public abstract class AbstractTestCodeFactory {
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
             methodBody.append(enter + space8 + "// Initialize params of the method" + sep);
-            importList.add("import unit.test.api.ObjectInit" + sep);
+            importSet.add("import unit.test.api.ObjectInit" + sep);
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
                 methodBody.append(enter + space8 + param.getType() + " " + param.getName()
@@ -193,10 +205,12 @@ public abstract class AbstractTestCodeFactory {
         return methodBody.toString();
     }
 
-    protected String writeAssert(Method method) {
+    protected String writeMethodAssert(Method method) {
+
         StringBuilder assertStr = new StringBuilder();
+        assertStr.append(enter + space8 + "// Write the Assert code");
         if (method.getType().isVoidType()) {
-            importList.add(TestCodeUtil.IMPO_ASSERT + sep);
+            importSet.add(TestCodeUtil.IMPO_ASSERT + sep);
             if (method.getParamList().size() == 0) {
                 assertStr.append(enter + space8 + TestCodeUtil.ASSERTTRUE + sep);
             }

@@ -9,6 +9,7 @@ import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
@@ -27,10 +28,12 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
     public void visit(MethodDeclaration n, JavaSourceFile arg) {
         Method method = new Method();
         method.setBody(n.getBody().toString());
+        method.setOriginBody(n.getBody());
         method.setName(n.getName().toString());
         method.setParamList(n.getParameters());
         method.setReturnType(n.getType().asString());
         method.setType(n.getType());
+        method.setMethodDeclaration(n);
         NodeList<TypeParameter> typeParameters = n.getTypeParameters();
         Iterator<TypeParameter> iterator = typeParameters.iterator();
         while (iterator.hasNext()) {
@@ -65,19 +68,14 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
         Iterator<com.github.javaparser.ast.body.VariableDeclarator> iterator = n.getVariables().iterator();
         while (iterator.hasNext()) {
             com.github.javaparser.ast.body.VariableDeclarator entry = iterator.next();
-            entry.getName();
-            variableDeclaratorList.add(new VariableDeclarator().setName(entry.getName().toString()));
+            variableDeclaratorList.add(entry);
         }
-        arg.setFieldList(variableDeclaratorList);
-        n.getVariables().forEach((p) -> {
-            p.accept(this, arg);
-        });
-        n.getAnnotations().forEach((p) -> {
-            p.accept(this, arg);
-        });
-        n.getComment().ifPresent((l) -> {
-            l.accept(this, arg);
-        });
+        if (arg.getFieldList() == null || arg.getFieldList().size() == 0) {
+            arg.setFieldList(variableDeclaratorList);
+        } else {
+            arg.getFieldList().addAll(variableDeclaratorList);
+        }
+
         super.visit(n, arg);
     }
 

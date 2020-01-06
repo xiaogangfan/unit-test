@@ -1,6 +1,7 @@
 package org.xiaogang.action.dialog;
 
 
+import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +31,7 @@ public class SampleDialogWrapper extends DialogWrapper {
         JPanel jPanel = new JPanel();
         // 主窗体
         JFrame f = new JFrame("LoL");
+
 
         // 主窗体设置大小
         f.setSize(400, 300);
