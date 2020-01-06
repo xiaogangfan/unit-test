@@ -1,11 +1,11 @@
 ### 单测的本质
 - 是要去发现代码中的问题。
 
-### 单测环节中存在的问题（现状）
-#### 效率
+### 现实中，单测环节中可能存在的问题
+#### 效率方面
 - 手动代码低效，特别是代码重构的时候
 - 有些情况对象稍微大一些，我们就得不停的手动set，耗费大量时间
-#### 质量
+#### 质量方面
 - 应付：为了单测而单测
 - 单测不严谨，等于没有
 
@@ -74,96 +74,35 @@ JUnitGenerator V2.0
   <version>1.0.0-SNAPSHOT</version>
 </dependency> 
 ```
-- 在要测试的代码中，右键，选择自动生成代码，参见截图
-![](https://github.com/xiaogangfan/unit-test/blob/master/img/plugin_use.jpg)
-
+- 在要测试的代码中，右键，选择【Auto Generation Test Code】
+业务代码：
 ```
-import java.util.Date;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-import org.xiaogang.core.domain.model.JavaSourceFile;
-
-/**
- * 描述:
- *
- * @author xiaogangfan
- * @create 2019-08-06 2:17 PM
- */
-@Data
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class Exam {
-
-    private String name;
-    private Date effectTime;
-    private Integer peroid;
-    private Date endTime;
-    private String creatorName;
-    private String creatorNo;
-    private String status;
-    private Integer viewAnswer;
-
-    public Exam paramStr(String str, Exam e, JavaSourceFile j) {
+    public Exam paramStr(String str, Exam e) {
         if (viewAnswer == null) {
             return null;
         }
         return this;
     }
+
     public boolean canViewAnswer() {
         if (viewAnswer == null) {
             return false;
         }
         return viewAnswer == 1;
     }
-    public void nore() {
-
-    }
-    public Integer digi() {
-        return 0;
-    }
-}
 ```
-
-
 生成后的单测如下：
 ```
-import org.junit.Test;
-import org.xiaogang.core.domain.model.JavaSourceFile;
-import static org.junit.Assert.*;
-
-import org.junit.Assert;
-import unit.test.api.ObjectInit;
-import org.junit.Before;
-import java.util.Date;
- 
-public class ExamTest {
-    Exam exam = null;
-
- 
-    @Test
+   @Test
     public void testParamStr() { 
         // Initialize params of the method;
         String str = ObjectInit.random(String.class);
         Exam e = ObjectInit.random(Exam.class);
-        JavaSourceFile j = ObjectInit.random(JavaSourceFile.class);
-        Exam invokeResult = exam.paramStr(str, e, j);
+        Exam invokeResult = exam.paramStr(str, e);
 
         // Write the Assert code
         //Assert.assertEquals(expected, actual);
         //Assert.assertEquals(expected, invokeResult);
-    }
-
- 
-    @Test
-    public void testNore() { 
-        exam.nore();
-
-        // Write the Assert code
-        //Assert.assertTrue(true);
     }
 
  
@@ -176,25 +115,43 @@ public class ExamTest {
         //Assert.assertEquals(expected, invokeResult);
     }
 
- 
+```
+- 针对于需要mock的代码，比如xxService
+业务代码：对第三方的api调用是需要mock的
+```
+public boolean canGoWorld(String batchId) {
+        SimpleResultDTO<SimpleBatchInfoDTO> resultDTO = inspectHsfService.searchBatch(batchId);
+        if (!resultDTO.isSuccess() || resultDTO.getData() == null) {
+            log.error("batchId [" + batchId + "] searchBatch fail,detail:" + JSON
+                .toJSONString(resultDTO));
+            throw new RuntimeException("调用RCP异常");
+        }
+        if (StringUtils.equals(BatchStatusEnum.NO_COMPLETE.name(), resultDTO.getData().getStatus())) {
+            return true;
+        }
+        return false;
+    }
+```
+单测代码: 这里会把需要mock的数据，猜测出来，然后开发可以自由的去调整，目前是基于Jmockit来实现的
+```
     @Test
-    public void testDigi() { 
-        Integer invokeResult = exam.digi();
+    public void testCanGoWorld() { 
+        // Initialize params of the method;
+        String batchId = ObjectInit.random(String.class);
+        new Expectations() {{
+            //inspectHsfService.searchBatch(batchId);
+            //result = ObjectInit.random(SimpleResultDTO<SimpleBatchInfoDTO>.class);// mock的返回值，这里可以手动的修改，ObjectInit是工具类，随机初始化bean
+        }};
+        Boolean invokeResult = taskService.canGoWorld(batchId);// 如果有调用的返回值，下面的Assert也会提示要验证这个值
 
+        //new Verifications() {{
+        //}};
         // Write the Assert code
         //Assert.assertEquals(expected, actual);
         //Assert.assertEquals(expected, invokeResult);
     }
-
-    @Before
-    public void initInstance() {
-        // Initialize the object to be tested
-        exam = ObjectInit.random(Exam.class);
-    }
-}
 ```
+
 
 ### 如何贡献
 源码： github：git@github.com:xiaogangfan/unit-test.git
-
-
