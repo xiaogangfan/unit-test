@@ -29,7 +29,6 @@ public class Exam {
 
     private String status;
     private Integer viewAnswer;
-    private JavaSourceFile javaSourceFile;
 
     public Exam paramStr(String str, Exam e, JavaSourceFile j) {
         if (viewAnswer == null) {
