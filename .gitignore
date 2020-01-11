@@ -1,5 +1,6 @@
 
 .gradle
+.gradle/*/
 /build/
 
 .DS_Store
@@ -22,3 +23,21 @@ gradle-app.setting
 *.iml
 *.ipr
 
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+/.idea
+*.iml
+*.apk
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+/*/build/
+proguard/
+*.log

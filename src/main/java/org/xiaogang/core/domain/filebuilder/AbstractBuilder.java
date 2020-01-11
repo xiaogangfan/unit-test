@@ -1,6 +1,6 @@
 package org.xiaogang.core.domain.filebuilder;
 
-import org.xiaogang.core.domain.model.JavaSourceFile;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
 import org.xiaogang.core.domain.model.Method;
 
 /**
@@ -11,7 +11,7 @@ import org.xiaogang.core.domain.model.Method;
  */
 public abstract class AbstractBuilder {
 
-    private JavaSourceFile javaSourceFile;
+    private JavaSourceCodeParser javaSourceCodeParser;
 
     String getContent() {
         StringBuffer stringBuffer = new StringBuffer();
@@ -20,7 +20,7 @@ public abstract class AbstractBuilder {
     }
 
     protected StringBuilder generatePackage() {
-        return new StringBuilder(javaSourceFile.getPkg());
+        return new StringBuilder(javaSourceCodeParser.getPkg());
     }
 
     protected StringBuilder generateImports() {
@@ -29,7 +29,7 @@ public abstract class AbstractBuilder {
 
     protected StringBuilder generateMethod() {
         StringBuilder sb = new StringBuilder();
-        for (Method method : javaSourceFile.getMethodList()) {
+        for (Method method : javaSourceCodeParser.getMethodList()) {
             sb.append("public void test" + method.getName() + "() { ");
             sb.append("}");
         }

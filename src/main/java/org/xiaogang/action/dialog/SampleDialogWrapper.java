@@ -1,61 +1,87 @@
 package org.xiaogang.action.dialog;
 
-
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.ui.DialogWrapper;
-import org.jetbrains.annotations.Nullable;
+import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
-import java.awt.*;
+
+import com.intellij.openapi.ui.DialogWrapper;
+import org.apache.commons.collections.CollectionUtils;
+import org.jetbrains.annotations.Nullable;
+import org.xiaogang.core.domain.model.Config;
+import org.xiaogang.core.domain.model.Method;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
 
 public class SampleDialogWrapper extends DialogWrapper {
+    JavaSourceCodeParser javaSourceCodeParser;
+    Config config;
 
-    public SampleDialogWrapper() {
+    public SampleDialogWrapper(JavaSourceCodeParser javaSourceCodeParser, Config config) {
         super(true); // use current window as parent
+        this.javaSourceCodeParser = javaSourceCodeParser;
+        this.config = config;
         init();
         setTitle("Test DialogWrapper");
+
+    }
+
+    public void setJavaSourceCodeParser(JavaSourceCodeParser javaSourceCodeParser) {
+        this.javaSourceCodeParser = javaSourceCodeParser;
     }
 
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        JPanel dialogPanel = new JPanel(new BorderLayout());
+        JPanel dialogPanel = new JPanel();
 
-        JLabel label = new JLabel("testing");
-        label.setPreferredSize(new Dimension(100, 100));
-        dialogPanel.add(label, BorderLayout.CENTER);
+        dialogPanel.setLayout(new GridLayout(javaSourceCodeParser.getMethodList().size(), 1));
+        //JButton jButton = new JButton("全选/取消");
+        //jButton.addActionListener(
+        //    new ActionListener() {
+        //        @Override
+        //        public void actionPerformed(ActionEvent e) {
+        //            e.getActionCommand();
+        //        }
+        //    }
+        //);
+        //dialogPanel.add(jButton,1);
+
+        for (Method method : javaSourceCodeParser.getMethodList()) {
+            JCheckBox jCheckBox = wrapJcheckBox(method);
+            ItemListener itemListener = new ItemListener() {
+
+                @Override
+                public void itemStateChanged(ItemEvent e) {
+                    Object obj = e.getItem();
+                    if (obj.equals(jCheckBox)) {
+                        if (jCheckBox.isSelected()) {
+                            config.getMethodList().add(jCheckBox.getText());
+                            config.getMethodNameList().add(method.getName());
+                        } else {
+                            config.getMethodList().remove(jCheckBox.getText());
+                            config.getMethodNameList().remove(method.getName());
+                        }
+                    }
+                }
+            };
+            jCheckBox.addItemListener(itemListener);
+            dialogPanel.add(jCheckBox);
+        }
 
         return dialogPanel;
     }
-    public static void main(String[] args) {
-        JPanel jPanel = new JPanel();
-        // 主窗体
-        JFrame f = new JFrame("LoL");
 
+    private JCheckBox wrapJcheckBox(Method method) {
 
-        // 主窗体设置大小
-        f.setSize(400, 300);
-
-        // 主窗体设置位置
-        f.setLocation(200, 200);
-
-        // 主窗体中的组件设置为绝对定位
-        f.setLayout(null);
-
-        // 按钮组件
-        JButton b = new JButton("一键秒对方基地挂");
-
-        // 同时设置组件的大小和位置
-        b.setBounds(50, 50, 280, 30);
-
-        // 把按钮加入到主窗体中
-        f.add(b);
-
-        // 关闭窗体的时候，退出程序
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // 让窗体变得可见
-        f.setVisible(true);
-
+        return new JCheckBox(method.getName() +
+            (CollectionUtils.isEmpty(method.getParamList()) ? "()" : "(" + method.getParamList().stream().map(
+                t -> {
+                    return (t.getType().asString() + " " + t.getName().asString());
+                }).collect(Collectors.toList()).stream().collect(
+                Collectors.joining(",")) + "）")
+            + ":" + method.getReturnType());
     }
 
 }

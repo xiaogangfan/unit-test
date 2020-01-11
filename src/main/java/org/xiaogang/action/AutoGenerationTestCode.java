@@ -25,22 +25,23 @@ public class AutoGenerationTestCode extends AnAction {
         try {
             String path = queryPath(e);
             // Generate file
-            generateFiles(path);
-            // Generate report
+            if (generateFiles(e,path)) {
+                Messages.showMessageDialog(
+                    result
+                    , "生成结果"
+                    , Messages.getInformationIcon()
+                );
+            }
+
         } catch (Exception e1) {
             e1.printStackTrace();
             result = "失败:" + e1.getMessage();
         }
 
-        Messages.showMessageDialog(
-            result
-            , "生成结果"
-            , Messages.getInformationIcon()
-        );
     }
 
-    private void generateFiles(String path) {
-        JavaSourceFileApplication.generateFiles(path);
+    private boolean generateFiles(AnActionEvent e, String path) {
+        return JavaSourceFileApplication.generateFiles(e,path);
     }
 
     private String queryPath(AnActionEvent e) {
@@ -56,6 +57,8 @@ public class AutoGenerationTestCode extends AnAction {
         } else if ("ProjectViewPopup".equals(e.getPlace())) {
             return e.getProject().getBasePath();
         }
+
+
         throw new RuntimeException("获取路径错误");
     }
 

@@ -6,12 +6,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang.StringUtils;
-import org.xiaogang.core.domain.model.JavaSourceFile;
+import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
 import org.xiaogang.util.StringUtil;
 import org.xiaogang.util.TestCodeUtil;
 
@@ -22,6 +26,7 @@ import org.xiaogang.util.TestCodeUtil;
  * @create 2019-09-09 6:01 PM
  */
 public abstract class AbstractTestCodeFactory {
+    public static final String initInstance = "initInstance";
     public static final String sep = ";";
     public static final String enter = "\n";
     public static final String enter2 = "\n \n";
@@ -32,33 +37,32 @@ public abstract class AbstractTestCodeFactory {
     public static final String space8 = "        ";
     public static final String space12 = "            ";
 
-    protected JavaSourceFile jsf = null;
+    protected JavaSourceCodeParser javaSourceCodeParser = null;
+    protected JavaTestCodeParser javaTestCodeParser = null;
+    protected Config config = null;
 
     protected String pkg;
     protected Set<String> importSet = new HashSet<>();
-    protected Set<String> fieldSet = new HashSet<>();
-    protected Set<String> methodSet = new HashSet<>();
     protected String classHeader;
-    protected String classBody;
-    protected String implementInterface;
-    protected String extendsClass;
+    protected List<String> fieldSet = Lists.newArrayList();
+    protected List<String> methodSet = Lists.newArrayList();
 
     public AbstractTestCodeFactory() {
     }
 
-    public static AbstractTestCodeFactory create(JavaSourceFile jsf) {
-        AbstractTestCodeFactory factory = null;
+    public static AbstractTestCodeFactory create(JavaSourceCodeParser jsf,
+        JavaTestCodeParser javaTestCodeParser, Config config) {
         if (needMockCase(jsf)) {
-            return new JmockitCodeFactory(jsf);
+            return new JmockitCodeFactory(jsf, javaTestCodeParser, config);
         }
-        return new DDDDomainTestCodeFactory(jsf);
+        return new PoJoCodeFactory(jsf, javaTestCodeParser, config);
     }
 
     /**
      * @param jsf
      * @return
      */
-    private static boolean needMockCase(JavaSourceFile jsf) {
+    private static boolean needMockCase(JavaSourceCodeParser jsf) {
         if (jsf.getName().endsWith("Service") || jsf.getName().endsWith("ServiceImpl") || jsf.getName().endsWith(
             "Application")) {
             return true;
@@ -66,8 +70,8 @@ public abstract class AbstractTestCodeFactory {
         return false;
     }
 
-    public AbstractTestCodeFactory(JavaSourceFile jsf) {
-        this.jsf = jsf;
+    public AbstractTestCodeFactory(JavaSourceCodeParser javaSourceCodeParser) {
+        this.javaSourceCodeParser = javaSourceCodeParser;
     }
 
     public String createFileString() {
@@ -87,30 +91,79 @@ public abstract class AbstractTestCodeFactory {
         this.importSet.add(impo + " static org.junit.Assert.*;");
         this.importSet.add(impo + " org.junit.Test;");
         this.importSet.add(enter);
-        this.importSet.addAll(jsf.getImportList());
+        this.importSet.addAll(javaSourceCodeParser.getImportList());
 
     }
 
     protected void setPkg() {
-        pkg = Optional.ofNullable(jsf.getPkg()).map(t -> "package " + t.replace(".main.", ".test.") + sep).orElse("");
+        pkg = Optional.ofNullable(javaSourceCodeParser.getPkg()).map(
+            t -> "package " + t.replace(".main.", ".test.") + sep).orElse("");
     }
 
     protected void setClassHeader() {
-        classHeader = "public class " + jsf.getName() + "Test ";
+        classHeader = "public class " + javaSourceCodeParser.getName() + "Test ";
     }
 
     protected void setMethods() {
-        methodSet.add(initInstance());
-        for (Method method : jsf.getMethodList()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(writeMethodHeader(method));
-            sb.append(writeMethodMock(method));
-            sb.append(writeMethodInvoke(method));
-            //sb.append(space8 + verify(ModelEnum.DDD_Model, method));
-            sb.append(writeMethodAssert(method));
-            sb.append(writeMethodFooter());
-            methodSet.add(sb.toString());
+        // Handle testfile
+        handleTestFile();
+        // Handle change method
+        for (Method method : javaSourceCodeParser.getMethodList()) {
+            if (needFilter(method)) {
+                continue;
+            }
+            handleNewMethod(method);
         }
+    }
+
+    protected boolean needFilter(Method method) {
+        String methodSign = javaSourceCodeParser.generateMethodSign(method);
+        if (!config.getMethodNameList().contains(methodSign)) {
+            return true;
+        }
+        if (javaSourceCodeParser.getMethodDeclarationMap() != null) {
+            MethodDeclaration methodDeclaration = javaSourceCodeParser.getMethodDeclarationMap().get(methodSign);
+            if (methodDeclaration != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void handleNewMethod(Method method) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(writeMethodHeader(method));
+        sb.append(writeMethodMock(method));
+        sb.append(writeMethodInvoke(method));
+        sb.append(writeMethodAssert(method));
+        sb.append(writeMethodFooter());
+        methodSet.add(sb.toString());
+    }
+
+    protected void handleTestFile() {
+        if (javaTestCodeParser != null && javaTestCodeParser.getMethodDeclarationMap() != null) {
+            MethodDeclaration methodDeclaration = javaTestCodeParser.getMethodDeclarationMap().get(initInstance);
+            if (methodDeclaration == null) {
+                methodSet.add(initInstance());
+            }
+            if (CollectionUtils.isNotEmpty(javaTestCodeParser.getMethodList())) {
+                for (Method method : javaTestCodeParser.getMethodList()) {
+                    String methodSign = javaTestCodeParser.generateMethodSign(method);
+                    if (config.getMethodNameList().contains(methodSign)) {
+                        continue;
+                    }
+                    methodSet.add(enter + space4 + generateTestSourceCodeMethodString(method.getMethodDeclaration()));
+                }
+            }
+        } else {
+            methodSet.add(initInstance());
+        }
+    }
+
+    protected String generateTestSourceCodeMethodString(MethodDeclaration methodDeclaration) {
+        // todo
+        return methodDeclaration.getTokenRange().get().toString();
+
     }
 
     public String generateTestFileString() {
@@ -168,14 +221,14 @@ public abstract class AbstractTestCodeFactory {
     }
 
     protected String writeMethodInvoke(Method method) {
-        if (StringUtils.isNotBlank(jsf.getPkg())) {
+        if (StringUtils.isNotBlank(javaSourceCodeParser.getPkg())) {
         }
 
         StringBuilder methodBody = new StringBuilder();
 
         String methodParams = "";
         // 实例化待测试的实例
-        String instansVarName = StringUtil.firstLower(jsf.getName());
+        String instansVarName = StringUtil.firstLower(javaSourceCodeParser.getName());
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
             methodBody.append(enter + space8 + "// Initialize params of the method" + sep);
@@ -194,13 +247,33 @@ public abstract class AbstractTestCodeFactory {
         methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
         if (!method.getType().isVoidType()) {
             String resultType = StringUtil.firstUpper(method.getType().asString());
-            methodBody.append(
-                enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
-                    + methodParams + ")" + sepAndenter);
+            if (method.getMethodDeclaration().isPrivate()) {
+                importSet.add("import mockit.Deencapsulation;");
+                methodBody.append(
+                    enter + space8 + resultType + " invokeResult = (" + resultType + ")" + "Deencapsulation.invoke("
+                        + instansVarName + ", \"" + method.getName()
+                        + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"
+                        + sepAndenter);
+            } else {
+                methodBody.append(
+                    enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
+                        + methodParams + ")" + sepAndenter);
+            }
+
         } else {
-            methodBody.append(
-                enter + space8 + instansVarName + "." + method.getName() + "("
-                    + methodParams + ")" + sepAndenter);
+            if (method.getMethodDeclaration().isPrivate()) {
+                importSet.add("import mockit.Deencapsulation;");
+                methodBody.append(
+                    enter + space8 + "Deencapsulation.invoke("
+                        + instansVarName + ", " + method.getName() + ", "
+                        + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"
+                        + sepAndenter);
+            } else {
+                methodBody.append(
+                    enter + space8 + instansVarName + "." + method.getName() + "("
+                        + methodParams + ")" + sepAndenter);
+            }
+
         }
         return methodBody.toString();
     }

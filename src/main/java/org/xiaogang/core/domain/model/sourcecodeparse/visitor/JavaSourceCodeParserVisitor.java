@@ -1,4 +1,4 @@
-package org.xiaogang.core.domain.model;
+package org.xiaogang.core.domain.model.sourcecodeparse.visitor;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +16,8 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.xiaogang.core.domain.model.Method;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
 
 /**
  * 描述:
@@ -23,9 +25,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author xiaogangfan
  * @create 2019-09-03 6:58 PM
  */
-public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
+public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCodeParser> {
     @Override
-    public void visit(MethodDeclaration n, JavaSourceFile arg) {
+    public void visit(MethodDeclaration n, JavaSourceCodeParser arg) {
         Method method = new Method();
         method.setBody(n.getBody().toString());
         method.setOriginBody(n.getBody());
@@ -51,19 +53,19 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
     }
 
     @Override
-    public void visit(ClassOrInterfaceDeclaration n, JavaSourceFile arg) {
+    public void visit(ClassOrInterfaceDeclaration n, JavaSourceCodeParser arg) {
         arg.setName(n.getNameAsString());
         super.visit(n, arg);
     }
 
     @Override
-    public void visit(PackageDeclaration n, JavaSourceFile arg) {
+    public void visit(PackageDeclaration n, JavaSourceCodeParser arg) {
         arg.setPkg(n.getNameAsString());
         super.visit(n, arg);
     }
 
     @Override
-    public void visit(final FieldDeclaration n, JavaSourceFile arg) {
+    public void visit(final FieldDeclaration n, JavaSourceCodeParser arg) {
         List<VariableDeclarator> variableDeclaratorList = Lists.newArrayList();
         Iterator<com.github.javaparser.ast.body.VariableDeclarator> iterator = n.getVariables().iterator();
         while (iterator.hasNext()) {
@@ -80,7 +82,7 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
     }
 
     @Override
-    public void visit(final CompilationUnit n, JavaSourceFile arg) {
+    public void visit(final CompilationUnit n, JavaSourceCodeParser arg) {
 
         n.getImports().forEach(p -> {
             if (p.getNameAsString().contains("lombok")) {
@@ -100,7 +102,7 @@ public class JavaSourceFileVisitor extends VoidVisitorAdapter<JavaSourceFile> {
     }
 
     @Override
-    public void visit(final ReturnStmt n, JavaSourceFile arg) {
+    public void visit(final ReturnStmt n, JavaSourceCodeParser arg) {
         n.getExpression().ifPresent(l -> l.accept(this, arg));
         n.getComment().ifPresent(l -> l.accept(this, arg));
         super.visit(n, arg);

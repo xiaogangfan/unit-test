@@ -15,9 +15,12 @@ import com.github.javaparser.ast.stmt.Statement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.xiaogang.core.domain.model.JavaSourceFile;
+import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
 import org.xiaogang.util.StringUtil;
 
 /**
@@ -27,22 +30,27 @@ import org.xiaogang.util.StringUtil;
  * @create 2019-09-09 6:01 PM
  */
 public class JmockitCodeFactory extends AbstractTestCodeFactory {
-    public JmockitCodeFactory(JavaSourceFile jsf) {
-        this.jsf = jsf;
+
+    public JmockitCodeFactory(JavaSourceCodeParser JavaSourceCodeParser, JavaTestCodeParser javaTestCodeParser,
+        Config config) {
+        this.javaSourceCodeParser = JavaSourceCodeParser;
+        this.javaTestCodeParser = javaTestCodeParser;
+        this.config = config;
     }
 
     @Override
-    protected void setMethods() {
-        for (Method method : jsf.getMethodList()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(writeMethodHeader(method));
-            sb.append(writeMethodInvoke(method));
-            //sb.append(space8 + verify(ModelEnum.DDD_Model, method));
-            sb.append(writeMethodAssert(method));
-            sb.append(writeMethodFooter());
-            methodSet.add(sb.toString());
+    protected void handleTestFile() {
+        if (javaTestCodeParser != null && javaTestCodeParser.getMethodDeclarationMap() != null) {
+            if (CollectionUtils.isNotEmpty(javaTestCodeParser.getMethodList())) {
+                for (Method method : javaTestCodeParser.getMethodList()) {
+                    String methodSign = javaTestCodeParser.generateMethodSign(method);
+                    if (config.getMethodNameList().contains(methodSign)) {
+                        continue;
+                    }
+                    methodSet.add(enter + space4 + generateTestSourceCodeMethodString(method.getMethodDeclaration()));
+                }
+            }
         }
-
     }
 
     public JmockitCodeFactory() {
@@ -51,14 +59,16 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     @Override
     protected void setFields() {
-        if (CollectionUtils.isEmpty(jsf.getFieldList())) {
+        if (CollectionUtils.isEmpty(javaSourceCodeParser.getFieldList())) {
             return;
         }
 
-        fieldSet.add(space4 + "@Tested" + enter + space4 + jsf.getName() + " " + jsf.getVarName() + ";");
+        fieldSet.add(
+            space4 + "@Tested" + enter + space4 + javaSourceCodeParser.getName() + " " + javaSourceCodeParser.getVarName()
+                + ";");
         importSet.add("import mockit.Tested;");
 
-        for (VariableDeclarator var : jsf.getFieldList()) {
+        for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
             if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
                 fieldSet.add(
                     space4 + "@Injectable" + enter + space4 + var.getType().asString() + " " + StringUtil
@@ -75,7 +85,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
     protected void setClassHeader() {
         importSet.add("import mockit.integration.junit4.JMockit;");
         classHeader = "@RunWith(JMockit.class)" + enter;
-        classHeader += "public class " + jsf.getName() + "Test ";
+        classHeader += "public class " + javaSourceCodeParser.getName() + "Test ";
     }
 
     @Override
@@ -86,7 +96,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
         String methodParams = "";
         // 实例化待测试的实例
-        String instansVarName = StringUtil.firstLower(jsf.getName());
+        String instansVarName = StringUtil.firstLower(javaSourceCodeParser.getName());
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
             methodBody.append(enter + space8 + "// Initialize params of the method" + sep);
@@ -113,7 +123,9 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
                 methodBody.append(
                     enter + space8 + resultType + " invokeResult = (" + resultType + ")" + "Deencapsulation.invoke("
                         + instansVarName + ", \"" + method.getName() + "\", "
-                        + methodParams + ")" + sepAndenter);
+                        + (org.apache.commons.lang.StringUtils.isNotBlank(methodParams) ? (", " + methodParams)
+                        : methodParams) + ")"
+                        + sepAndenter);
             } else {
                 methodBody.append(
                     enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
@@ -126,7 +138,9 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
                 methodBody.append(
                     enter + space8 + "Deencapsulation.invoke("
                         + instansVarName + ", " + method.getName() + ", "
-                        + methodParams + ")" + sepAndenter);
+                        + (org.apache.commons.lang.StringUtils.isNotBlank(methodParams) ? (", " + methodParams)
+                        : methodParams) + ")"
+                        + sepAndenter);
             } else {
                 methodBody.append(
                     enter + space8 + instansVarName + "." + method.getName() + "("
@@ -228,7 +242,10 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     private List<String> serviceInvokeMatcher() {
         List<String> result = new ArrayList<>();
-        for (VariableDeclarator var : jsf.getFieldList()) {
+        if(CollectionUtils.isEmpty(javaSourceCodeParser.getFieldList())){
+            return Lists.newArrayList();
+        }
+        for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
             if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
                 result.add("(.*?)(=)(.*?)(" + var.getName().toString() + "\\.)(.*?)(\\((\\n)?)(.*?)(])");
             }

@@ -13,9 +13,19 @@ import java.util.List;
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.google.common.collect.Lists;
-import org.xiaogang.core.domain.model.JavaSourceFile;
-import org.xiaogang.core.domain.model.JavaSourceFileVisitor;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.search.FilenameIndex;
+import com.intellij.psi.search.GlobalSearchScope;
+import org.xiaogang.action.dialog.SampleDialogWrapper;
+import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.factory.AbstractTestCodeFactory;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
+import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
+import org.xiaogang.core.domain.model.sourcecodeparse.visitor.JavaSourceCodeParserVisitor;
+import org.xiaogang.core.domain.model.sourcecodeparse.visitor.JavaTestCodeParserVisitor;
 
 /**
  * 描述:
@@ -47,24 +57,20 @@ public class JavaSourceFileApplication {
         }
     }
 
-    public static List<JavaSourceFile> parse(List<String> fileNames) {
-        List<JavaSourceFile> javaSourceFileList = Lists.newArrayList();
+    public static JavaSourceCodeParser parseSourceCodeFile(String fileName) {
+        JavaSourceCodeParser jsf = new JavaSourceCodeParser();
         try {
-            for (String fileName : fileNames) {
-                FileInputStream in = new FileInputStream(fileName);
-                CompilationUnit cu = JavaParser.parse(in);
-                JavaSourceFile jsf = new JavaSourceFile();
-                jsf.setPathName(fileName);
+            FileInputStream in = new FileInputStream(fileName);
+            CompilationUnit cu = JavaParser.parse(in);
+            jsf.setPathName(fileName);
 
-                cu.accept(new JavaSourceFileVisitor(), jsf);
-                //                jsf.setClassName()
-                javaSourceFileList.add(jsf);
-            }
+            cu.accept(new JavaSourceCodeParserVisitor(), jsf);
+            //                jsf.setClassName()
+            return jsf;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("parse erroe", e);
         }
-        return javaSourceFileList;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -75,70 +81,119 @@ public class JavaSourceFileApplication {
                     + ".java")
             , fileNames
         );
-        List<JavaSourceFile> javaSourceFileList = parse(fileNames);
+        //JavaSourceFile javaSourceFile = parse(fileNames);
 
         //System.out.println(JSON.toJSON(fileNames));
 
-        generateFile(javaSourceFileList);
+        //generateFile(javaSourceFile);
     }
 
-    private static void generateFile(List<JavaSourceFile> javaSourceFileList) {
+    private static void generateFile(AnActionEvent e,
+        JavaSourceCodeParser javaSourceCodeParser,
+        JavaTestCodeParser javaTestCodeParser, Config config) {
+        String testFileString = generateTestFileString(javaSourceCodeParser, javaTestCodeParser, config);
+        writeFile(e, javaSourceCodeParser, testFileString);
+
+    }
+
+    private static void writeFile(AnActionEvent event,
+        JavaSourceCodeParser javaSourceCodeParser, String testFileString) {
+        String testFile = javaSourceCodeParser.getPathName().replace("/main/", "/test/");
+        int i = testFile.lastIndexOf("/");
+        String dir = testFile.substring(0, i);
+
+        File parentDir = new File(dir);
+        if (!parentDir.exists()) {
+            parentDir.mkdirs();
+        }
+
+        int i1 = testFile.lastIndexOf(".");
+        String testFileName = testFile.substring(0, i1) + "Test.java";
+        File file = new File(testFileName);
+
         PrintWriter pw = null;
         BufferedWriter bw = null;
-        for (JavaSourceFile javaSourceFile : javaSourceFileList) {
-
-            String testFile = javaSourceFile.getPathName().replace("/main/", "/test/");
-            int i = testFile.lastIndexOf("/");
-            String dir = testFile.substring(0, i);
-            File parentDir = new File(dir);
-            if (!parentDir.exists()) {
-                parentDir.mkdirs();
+        try {
+            if (!file.exists()) {    //判断是否存在java文件
+                file.createNewFile();    //不存在则创建
             }
-
-            int i1 = testFile.lastIndexOf(".");
-            String testFileName = testFile.substring(0, i1) + "Test.java";
-            File file = new File(testFileName);
-
-            String testFileString = generateTestFileString(javaSourceFile);
+            pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+            bw = new BufferedWriter(pw);
+            bw.write(testFileString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
-                if (!file.exists()) {    //判断是否存在java文件
-                    file.createNewFile();    //不存在则创建
+                if (bw != null) {
+                    bw.close();
                 }
-                pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-                bw = new BufferedWriter(pw);
-                bw.write(testFileString);
+                if (pw != null) {
+                    pw.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    if (bw != null) {
-                        bw.close();
-                    }
-                    if (pw != null) {
-                        pw.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
+        }
 
+        // Format
+        PsiFile[] psiFiles = FilenameIndex.getFilesByName(event.getData(PlatformDataKeys.PROJECT), testFileName,
+            GlobalSearchScope.allScope(event.getData(PlatformDataKeys.PROJECT)));
+        CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(event.getData(PlatformDataKeys.PROJECT));
+        try {
+            codeStyleManager.reformat(psiFiles[0]);
+        } catch (Exception e) {
+        }
+    }
+
+    private static String generateTestFileString(JavaSourceCodeParser javaSourceCodeParser,
+        JavaTestCodeParser javaTestCodeParser, Config config) {
+        AbstractTestCodeFactory factory = AbstractTestCodeFactory.create(javaSourceCodeParser, javaTestCodeParser,
+            config);
+        return factory.createFileString();
+    }
+
+    public static boolean generateFiles(AnActionEvent e, String path) {
+        //List<String> fileNames = Lists.newArrayList();
+        //findFileList(
+        //    new File(path)
+        //    , fileNames
+        //);
+        JavaSourceCodeParser javaSourceCodeParser = parseSourceCodeFile(path);
+        JavaTestCodeParser javaTestCodeParser = parseTargeTestFile(path);
+
+        Config config = new Config();
+        SampleDialogWrapper sampleDialogWrapper = new SampleDialogWrapper(javaSourceCodeParser, config);
+        boolean isOk = sampleDialogWrapper.showAndGet();
+        if (isOk) {
+            generateFile(e, javaSourceCodeParser, javaTestCodeParser, config);
+            return true;
+        } else {
+            return false;
         }
 
     }
 
-    private static String generateTestFileString(JavaSourceFile javaSourceFile) {
-        AbstractTestCodeFactory factory = AbstractTestCodeFactory.create(javaSourceFile);
-        return factory.createFileString();
-    }
+    private static JavaTestCodeParser parseTargeTestFile(String fileName) {
+        String testFile = fileName.replace("/main/", "/test/");
+        int i = testFile.lastIndexOf("/");
+        int i1 = testFile.lastIndexOf(".");
+        String testFileName = testFile.substring(0, i1) + "Test.java";
+        File file = new File(testFileName);
+        if (!new File(testFileName).exists()) {
+            return null;
+        }
+        JavaTestCodeParser jsf = new JavaTestCodeParser();
+        try {
+            FileInputStream in = new FileInputStream(file);
+            CompilationUnit cu = JavaParser.parse(in);
+            jsf.setPathName(testFile);
 
-    public static void generateFiles(String path) {
-        List<String> fileNames = Lists.newArrayList();
-        findFileList(
-            new File(path)
-            , fileNames
-        );
-        List<JavaSourceFile> javaSourceFileList = parse(fileNames);
-
-        generateFile(javaSourceFileList);
+            cu.accept(new JavaTestCodeParserVisitor(), jsf);
+            //                jsf.setClassName()
+            return jsf;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("parse erroe", e);
+        }
     }
 }

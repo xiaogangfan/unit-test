@@ -176,7 +176,7 @@ public class Main extends JFrame {
     }
 
 
-    public static void start() {
+    public static void Main() {
 
         //窗口设置区
         JFrame frame = new Main();
