@@ -180,5 +180,5 @@ public boolean canGoWorld(String batchId) {
 
 
 ### 源码
-git@gitlab.alibaba-inc.com:shishang.fxg/auto-unit-test.git
+git@gitlab.alibaba-inc.com:shishang.fxg/unit-test.git
 github：git@github.com:xiaogangfan/unit-test.git
