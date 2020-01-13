@@ -25,41 +25,45 @@ public class AutoGenerationTestCode extends AnAction {
         try {
             String path = queryPath(e);
             // Generate file
-            if (generateFiles(e,path)) {
-                Messages.showMessageDialog(
-                    result
-                    , "生成结果"
-                    , Messages.getInformationIcon()
-                );
-            }
+            generateFiles(e, path);
 
         } catch (Exception e1) {
             e1.printStackTrace();
-            result = "失败:" + e1.getMessage();
+            result = "失败：" + e1.getMessage();
+            Messages.showMessageDialog(
+                result
+                , "生成失败："
+                , Messages.getInformationIcon()
+            );
         }
 
     }
 
     private boolean generateFiles(AnActionEvent e, String path) {
-        return JavaSourceFileApplication.generateFiles(e,path);
+        return JavaSourceFileApplication.generateFiles(e, path);
     }
 
     private String queryPath(AnActionEvent e) {
 
-        if ("EditorPopup".equals(e.getPlace())) {
-            Project project = e.getProject();
+        // 获取当前文件对象
+        Editor editor = e.getData(PlatformDataKeys.EDITOR);
+        PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, e.getProject());
+        String path = psiFile.getViewProvider().getVirtualFile().getPath();
+        return path;
 
-            // 获取当前文件对象
-            Editor editor = e.getData(PlatformDataKeys.EDITOR);
-            PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
-            String path = psiFile.getViewProvider().getVirtualFile().getPath();
-            return path;
-        } else if ("ProjectViewPopup".equals(e.getPlace())) {
-            return e.getProject().getBasePath();
-        }
+        //if ("EditorPopup".equals(e.getPlace())) {
+        //    Project project = e.getProject();
+        //
+        //    // 获取当前文件对象
+        //    Editor editor = e.getData(PlatformDataKeys.EDITOR);
+        //    PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
+        //    String path = psiFile.getViewProvider().getVirtualFile().getPath();
+        //    return path;
+        //} else if ("ProjectViewPopup".equals(e.getPlace())) {
+        //    return e.getProject().getBasePath();
+        //}
 
-
-        throw new RuntimeException("获取路径错误");
+        //throw new RuntimeException("获取路径错误");
     }
 
     protected JComponent createCenterPanel() {

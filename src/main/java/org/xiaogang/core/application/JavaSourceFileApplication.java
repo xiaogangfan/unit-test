@@ -15,6 +15,11 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.psi.search.FilenameIndex;
@@ -142,6 +147,20 @@ public class JavaSourceFileApplication {
         try {
             codeStyleManager.reformat(psiFiles[0]);
         } catch (Exception e) {
+        }
+
+        try {
+            VirtualFileManager manager = VirtualFileManager.getInstance();
+            VirtualFile virtualFile = manager
+                .refreshAndFindFileByUrl(VfsUtil.pathToUrl(testFileName));
+
+            VirtualFile finalVirtualFile = virtualFile;
+            ApplicationManager.getApplication()
+                .invokeLater(
+                    () -> FileEditorManager.getInstance(event.getProject()).openFile(finalVirtualFile, true,
+                        true));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

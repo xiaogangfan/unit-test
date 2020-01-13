@@ -25,7 +25,6 @@
     - 生成Jmockit风格的单测代码
 
 ### 未来要支持的功能
-- 通过右键，选择生成单测，如果已经存在，窗口提示现状，选择性覆盖哪些方法（这里主要是idea相关的功能开发）
 - 更好的去猜测如何设置调用的case、需要多少case以及如何Assert
 - 支持更多风格的单测生成，比如Spock等
 
@@ -65,19 +64,43 @@
 - 将基本的api开放，通过集成，使用者根据自己的情况编写模板
 - 如何做成一款产品，卖出去
 
+### 插件获取
+    - 源代码生成插件（推荐）：
+        - 下载代码：git clone git地址（下面有）
+        - 进入根目录：cd auto-unit-test
+        - 执行命令：./generatePlugin.sh
+        - 得到结果：
+        ```
+        请确保已经安装了Gradle
+        
+        Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+        Use '--warning-mode all' to show the individual deprecation warnings.
+        See https://docs.gradle.org/6.0.1/userguide/command_line_interface.html#sec:command_line_warnings
+        
+        BUILD SUCCESSFUL in 4s
+        10 actionable tasks: 1 executed, 9 up-to-date
+        cp: build/distributions/ is a directory (not copied).
+        插件生成成功：unit.test-0.0.2.zip
+
+        ```
+
+    - 直接下载（可能会有版本问题，导致不兼容，用下面的）：https://plugins.jetbrains.com/plugin/download?pluginId=org.xiaogang.unit.test&version=0.0.2 
 ### 插件安装
-地址（先下载，从磁盘安装）：https://plugins.jetbrains.com/plugin/13408-generate-unit-test-code/versions
+- idea本地安装就可以
 
 ### 如何使用
 - 添加pom:配套的pom：主要用来配合生成单测的代码
+
 ```
 <dependency>
   <groupId>com.alibaba.cro</groupId>
   <artifactId>unit-test-api</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency> 
+
 ```
-- 在要测试的代码中，右键，选择【Auto Generation Test Code】
+
+- 在要测试的代码中，右键，选择【generate...】,然后选择【Auto Generation Test Code】，然后会弹出一个对话框，选择要生成单测的方法
 业务代码：
 ```
     public Exam paramStr(String str, Exam e) {
@@ -157,5 +180,5 @@ public boolean canGoWorld(String batchId) {
 
 
 ### 源码
+git@gitlab.alibaba-inc.com:shishang.fxg/auto-unit-test.git
 github：git@github.com:xiaogangfan/unit-test.git
-q
