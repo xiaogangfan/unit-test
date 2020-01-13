@@ -41,3 +41,6 @@ gen/
 /*/build/
 proguard/
 *.log
+
+unit.test*
+
