@@ -17,7 +17,7 @@ public class JmockitCodeFactoryTest {
 
     @Test
     public void testGetMatchStatment() {
-        // Initialize params of the method;
+        // Initialize params of the method
         String statement = "Dto sd = practiseRepository.load(command.getPractiseId());]";
         List<String> matcherList = Lists.newArrayList();
         matcherList.add("(.*?)(=)(.*?)(practiseRepository" + "\\.)(.*?)(\\((\\n)?)(.*?)(\\))(.*?)(])");

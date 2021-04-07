@@ -12,6 +12,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.type.Type;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
@@ -90,7 +91,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     @Override
     protected String writeMethodInvoke(Method method) {
-        //// TODO 改成支持private方法的动态调用
+        // TODO 改成支持private方法的动态调用
         //return super.writeMethodInvoke(method);
         StringBuilder methodBody = new StringBuilder();
 
@@ -99,7 +100,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         String instansVarName = StringUtil.firstLower(javaSourceCodeParser.getName());
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
-            methodBody.append(enter + space8 + "// Initialize params of the method" + sep);
+            methodBody.append(enter + space8 + "// Initialize params of the method");
             importSet.add("import unit.test.api.ObjectInit" + sep);
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
@@ -151,12 +152,14 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         return methodBody.toString();
     }
 
+
+
     @Override
     protected String writeMethodAssert(Method method) {
         String superResult = super.writeMethodAssert(method);
         StringBuffer verify = new StringBuffer();
-        verify.append(enter + space8 + "//new Verifications() {{");
-        verify.append(enter + space8 + "//}};");
+        verify.append(enter + space8 + "new Verifications() {{");
+        verify.append(enter + space8 + "}};");
         return verify.toString() + superResult;
     }
 
@@ -164,6 +167,8 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
     protected String writeMethodMock(Method method) {
         StringBuffer mock = new StringBuffer();
         importSet.add("import mockit.Expectations;");
+        importSet.add("import unit.test.api.ObjectInit;");
+        importSet.add("import org.junit.Assert;");
         mock.append(enter + space8 + "new Expectations() {{");
         List<String> matcherList = serviceInvokeMatcher();
         Iterator<Statement> iterator = method.getMethodDeclaration().getBody().get().getStatements().iterator();

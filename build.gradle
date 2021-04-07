@@ -23,6 +23,7 @@ dependencies {
     compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
     compile 'org.apache.commons:commons-lang3:3.8.1'
     compile 'org.projectlombok:lombok:1.18.10'
+    compile 'com.alibaba:fastjson:1.2.62'
 
     testCompile 'junit:junit:4.12'
     testCompile 'io.github.benas:random-beans:3.6.0'
@@ -32,7 +33,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2019.2.4'
+    version '2020.1.1'
 }
 patchPluginXml {
     changeNotes """
@@ -40,7 +41,7 @@ patchPluginXml {
       <em>most HTML tags may be used</em>"""
 }
 
-publishPlugin {
-    token intellijPublishToken
-    channels 'beta'
-}
+//publishPlugin {
+//    token intellijPublishToken
+//    channels 'beta'
+//}

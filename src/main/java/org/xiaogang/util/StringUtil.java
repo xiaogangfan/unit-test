@@ -23,4 +23,16 @@ public class StringUtil {
         }
         return dest;
     }
+
+
+
+    public static String removeGeneric(String type){
+        String reg = "(.*?)(List<)(.*?)(>)";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(type.toString());
+        while (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
+    }
 }
