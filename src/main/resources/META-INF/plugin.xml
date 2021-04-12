@@ -7,6 +7,9 @@
 
     <idea-version since-build="201.7223" />
 
+    <depends>com.intellij.modules.lang</depends>
+
+
     <actions>
         <action id="AutoGenerationTestCode.ID" class="org.xiaogang.action.AutoGenerationTestCode"
                 text="Auto Generation Test Code" description="Automatic Generation of Unit Test Code  ">

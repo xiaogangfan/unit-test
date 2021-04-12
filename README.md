@@ -74,13 +74,31 @@
         ```
         请确保已经安装了Gradle
         
+        > Task :compileJava
+        注: /Users/fanxiaogang/Documents/code/unit-test/src/main/java/org/xiaogang/action/dialog/Main.java使用或覆盖了已过时的 API。
+        注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+        注: /Users/fanxiaogang/Documents/code/unit-test/src/main/java/org/xiaogang/util/ObjectTestUtilNew.java使用了未经检查或不安全的操作。
+        注: 有关详细信息, 请使用 -Xlint:unchecked 重新编译。
+        
+        > Task :patchPluginXml
+        [gradle-intellij-plugin :unit.test:patchPluginXml] Patching plugin.xml: attribute `since-build=[201.7223]` of `idea-version` tag will be set to `193.7288`
+        
+        > Task :buildSearchableOptions
+        WARNING: An illegal reflective access operation has occurred
+        WARNING: Illegal reflective access by com.intellij.ide.IdeEventQueue to constructor sun.awt.PostEventQueue(java.awt.EventQueue)
+        WARNING: Please consider reporting this to the maintainers of com.intellij.ide.IdeEventQueue
+        WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+        WARNING: All illegal access operations will be denied in a future release
+        Starting searchable options index builder
+        2021-04-12 15:44:40,493 [   2288]   WARN - ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting 
+        Searchable options index builder completed
+        
         Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
         Use '--warning-mode all' to show the individual deprecation warnings.
-        See https://docs.gradle.org/6.0.1/userguide/command_line_interface.html#sec:command_line_warnings
+        See https://docs.gradle.org/6.7.1/userguide/command_line_interface.html#sec:command_line_warnings
         
-        BUILD SUCCESSFUL in 4s
-        10 actionable tasks: 1 executed, 9 up-to-date
-        cp: build/distributions/ is a directory (not copied).
+        BUILD SUCCESSFUL in 20s
+        10 actionable tasks: 10 executed
         插件生成成功：unit.test-0.0.2.zip
 
         ```
