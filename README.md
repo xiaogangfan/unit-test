@@ -64,12 +64,13 @@
 - 将基本的api开放，通过集成，使用者根据自己的情况编写模板
 - 如何做成一款产品，卖出去
 
-### 插件获取
-    - 源代码生成插件（推荐）：
-        - 下载代码：git clone git地址（下面有）
-        - 进入根目录：cd auto-unit-test
-        - 执行命令：./generatePlugin.sh
-        - 得到结果：
+### 插件安装
+    - 前置条件
+        - 安装Gradle: 本插件使用gradle管理，需要先安装gradle
+    - 下载代码：git clone git地址（下面有）
+    - 进入根目录：cd auto-unit-test
+    - 执行命令：./generatePlugin.sh
+    - 得到结果：
         ```
         请确保已经安装了Gradle
         
@@ -83,11 +84,6 @@
         插件生成成功：unit.test-0.0.2.zip
 
         ```
-
-    - 直接下载（可能会有版本问题，导致不兼容，用下面的）：https://plugins.jetbrains.com/plugin/download?pluginId=org.xiaogang.unit.test&version=0.0.2 
-### 插件安装
-- idea本地安装就可以
-
 ### 如何使用
 - 添加pom:配套的pom：主要用来配合生成单测的代码
 

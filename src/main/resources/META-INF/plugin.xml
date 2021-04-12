@@ -5,6 +5,8 @@
 
     <description>Automatically generate unit test code to improve development efficiency</description>
 
+    <idea-version since-build="201.7223" />
+
     <actions>
         <action id="AutoGenerationTestCode.ID" class="org.xiaogang.action.AutoGenerationTestCode"
                 text="Auto Generation Test Code" description="Automatic Generation of Unit Test Code  ">
