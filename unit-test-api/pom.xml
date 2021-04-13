@@ -54,11 +54,12 @@
     </dependencies>
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>JD maven2 repository-snapshots</name>
-            <url>http://artifactory.jd.com/libs-snapshots-local</url>
-        </snapshotRepository>
+<!--         jd repository -->
+<!--        <snapshotRepository>-->
+<!--            <id>snapshots</id>-->
+<!--            <name>JD maven2 repository-snapshots</name>-->
+<!--            <url>http://artifactory.jd.com/libs-snapshots-local</url>-->
+<!--        </snapshotRepository>-->
     </distributionManagement>
 
 </project>
