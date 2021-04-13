@@ -31,9 +31,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
+// 必须与idea的版本保持一致 See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '2021.1'
+    version '2020.1.1'
 }
 patchPluginXml {
     changeNotes """

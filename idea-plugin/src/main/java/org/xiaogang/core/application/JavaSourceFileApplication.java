@@ -67,17 +67,17 @@ public class JavaSourceFileApplication {
             return jsf;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("parse erroe", e);
+            throw new RuntimeException("操作异常：" + e.getMessage());
         }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         List<String> fileNames = Lists.newArrayList();
         JavaSourceFileApplication.findFileList(
-            new File(
-                "/Users/xiaogangfan/Documents/ddd/auto-unittest-code/src/main/shishang/action/AutoGenerationTestCode"
-                    + ".java")
-            , fileNames
+                new File(
+                        "/Users/xiaogangfan/Documents/ddd/auto-unittest-code/src/main/shishang/action/AutoGenerationTestCode"
+                                + ".java")
+                , fileNames
         );
         //JavaSourceFile javaSourceFile = parse(fileNames);
 
@@ -87,15 +87,15 @@ public class JavaSourceFileApplication {
     }
 
     private static void generateFile(AnActionEvent e,
-        JavaSourceCodeParser javaSourceCodeParser,
-        JavaTestCodeParser javaTestCodeParser, Config config) {
+                                     JavaSourceCodeParser javaSourceCodeParser,
+                                     JavaTestCodeParser javaTestCodeParser, Config config) {
         String testFileString = generateTestFileString(javaSourceCodeParser, javaTestCodeParser, config);
         writeFile(e, javaSourceCodeParser, testFileString);
 
     }
 
     private static void writeFile(AnActionEvent event,
-        JavaSourceCodeParser javaSourceCodeParser, String testFileString) {
+                                  JavaSourceCodeParser javaSourceCodeParser, String testFileString) {
         String testFile = javaSourceCodeParser.getPathName().replace("/main/", "/test/");
         int i = testFile.lastIndexOf("/");
         String dir = testFile.substring(0, i);
@@ -135,7 +135,7 @@ public class JavaSourceFileApplication {
 
         // Format
         PsiFile[] psiFiles = FilenameIndex.getFilesByName(event.getData(PlatformDataKeys.PROJECT), testFileName,
-            GlobalSearchScope.allScope(event.getData(PlatformDataKeys.PROJECT)));
+                GlobalSearchScope.allScope(event.getData(PlatformDataKeys.PROJECT)));
         CodeStyleManager codeStyleManager = CodeStyleManager.getInstance(event.getData(PlatformDataKeys.PROJECT));
         try {
             codeStyleManager.reformat(psiFiles[0]);
@@ -145,22 +145,22 @@ public class JavaSourceFileApplication {
         try {
             VirtualFileManager manager = VirtualFileManager.getInstance();
             VirtualFile virtualFile = manager
-                .refreshAndFindFileByUrl(VfsUtil.pathToUrl(testFileName));
+                    .refreshAndFindFileByUrl(VfsUtil.pathToUrl(testFileName));
 
             VirtualFile finalVirtualFile = virtualFile;
             ApplicationManager.getApplication()
-                .invokeLater(
-                    () -> FileEditorManager.getInstance(event.getProject()).openFile(finalVirtualFile, true,
-                        true));
+                    .invokeLater(
+                            () -> FileEditorManager.getInstance(event.getProject()).openFile(finalVirtualFile, true,
+                                    true));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private static String generateTestFileString(JavaSourceCodeParser javaSourceCodeParser,
-        JavaTestCodeParser javaTestCodeParser, Config config) {
+                                                 JavaTestCodeParser javaTestCodeParser, Config config) {
         AbstractTestCodeFactory factory = AbstractTestCodeFactory.create(javaSourceCodeParser, javaTestCodeParser,
-            config);
+                config);
         return factory.createFileString();
     }
 
