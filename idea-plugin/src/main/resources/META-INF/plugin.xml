@@ -1,22 +1,19 @@
 <idea-plugin>
-    <id>org.example.idea-plugin</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>org.xiaogang.unit.test</id>
+    <name>Generate unit test code</name>
+    <vendor email="xiaogangfan@126.com" url="https://xiaogangfan.github.io/xiaogang.github.io/">blog</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>Automatically generate unit test code to improve development efficiency</description>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
-    <depends>com.intellij.modules.platform</depends>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
-    </extensions>
+    <idea-version since-build="201.7223" />
 
     <actions>
-        <!-- Add your actions here -->
+        <action id="AutoGenerationTestCode.ID" class="org.xiaogang.action.AutoGenerationTestCode"
+                text="Auto Generation Test Code" description="Automatic Generation of Unit Test Code  ">
+            <add-to-group group-id="GenerateGroup" anchor="first"/>
+            <!--            <add-to-group group-id="EditorPopupMenu" anchor="first"/>-->
+            <!--            <add-to-group group-id="ProjectViewPopupMenu" anchor="first"/>-->
+        </action>
+
     </actions>
 </idea-plugin>
