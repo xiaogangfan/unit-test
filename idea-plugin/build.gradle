@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.xiaogang'
-version '0.0.3'
+version '0.0.5'
 
 apply plugin: 'java'
 compileJava {
@@ -35,8 +35,13 @@ dependencies {
 intellij {
     version '2020.1.1'
 }
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+//patchPluginXml {
+//    changeNotes """
+//      Add change notes here.<br>
+//      <em>most HTML tags may be used</em>"""
+//}
+// Click publishPlugin in Gradle
+publishPlugin {
+    channels 'beta'
+    token = 'perm:eGlhb2dhbmdmYW4=.OTItMzcxMg==.xIigYSYuygm4vGsvmUNOnaNtOwm6EU'
 }

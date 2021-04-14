@@ -1,9 +1,20 @@
 <idea-plugin>
     <id>org.xiaogang.unit.test</id>
     <name>Generate unit test code</name>
-    <vendor email="xiaogangfan@126.com" url="https://xiaogangfan.github.io/xiaogang.github.io/">blog</vendor>
+    <vendor email="xiaogangfan@126.com" url="https://github.com/xiaogangfan/unit-test">xiaogangfan</vendor>
 
-    <description>Automatically generate unit test code to improve development efficiency</description>
+    <description>
+        作用：自动生成单元测试的代码，提升研发效率
+        Function: Automatically generate unit test code to improve research and development efficiency.
+
+        用法：在要测试的代码中，右键 -> 选择【generate...】->【Auto Generation Test Code】-> 选择要测试的方法 -> 确定
+        Usage: In the code to be tested, right click -> select [generate...] -> [Auto Generation Test Code] -> select the method to be tested -> OK.
+
+        这个插件目前是在公司内部推广中
+        This plugin is promoting in the company.
+    </description>
+
+    <depends>com.intellij.modules.lang</depends>
 
 
     <actions>
