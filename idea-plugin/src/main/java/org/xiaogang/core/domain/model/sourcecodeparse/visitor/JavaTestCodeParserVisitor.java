@@ -12,14 +12,16 @@ import com.github.javaparser.ast.type.TypeParameter;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
+import org.xiaogang.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+//import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.lang3.StringUtils;
 
 /**
  * 描述:
@@ -104,7 +106,7 @@ public class JavaTestCodeParserVisitor extends VoidVisitorAdapter<JavaTestCodePa
             // 解决javaparser在处理import中带*的问题
             int i = p.getName().asString().lastIndexOf(".");
             String substring = p.getName().asString().substring(i + 1, i + 2);
-            if (StringUtils.equals(substring, substring.toLowerCase())) {
+            if (substring.equals(substring.toLowerCase())) {
                 arg.getImportList().add("import " + (p.isStatic() ? "static" : "") + p.getName() + ".*;");
             } else {
                 arg.getImportList().add("import " + (p.isStatic() ? "static " : "") + p.getName() + ";");

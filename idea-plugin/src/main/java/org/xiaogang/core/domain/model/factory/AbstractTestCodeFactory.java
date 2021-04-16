@@ -2,15 +2,17 @@ package org.xiaogang.core.domain.model.factory;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.compress.utils.Lists;
-import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.compress.utils.Lists;
+//import org.apache.commons.lang.StringUtils;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
+import org.xiaogang.util.CollectionUtils;
 import org.xiaogang.util.StringUtil;
+import org.xiaogang.util.StringUtils;
 import org.xiaogang.util.TestCodeUtil;
 
 import java.util.*;
@@ -42,8 +44,8 @@ public abstract class AbstractTestCodeFactory {
     protected String pkg;
     protected Set<String> importSet = new HashSet<>();
     protected String classHeader;
-    protected List<String> fieldSet = Lists.newArrayList();
-    protected List<String> methodSet = Lists.newArrayList();
+    protected List<String> fieldSet = new ArrayList<>(16);
+    protected List<String> methodSet = new ArrayList<>(16);
 
     public AbstractTestCodeFactory() {
     }

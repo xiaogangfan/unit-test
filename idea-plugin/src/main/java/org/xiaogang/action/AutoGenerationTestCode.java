@@ -33,6 +33,7 @@ public class AutoGenerationTestCode extends AnAction {
                 , "生成失败："
                 , Messages.getInformationIcon()
             );
+
         }
 
     }

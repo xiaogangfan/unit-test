@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.xiaogang'
-version '0.0.5'
+version '0.0.6'
 
 apply plugin: 'java'
 compileJava {
@@ -20,28 +20,28 @@ repositories {
 dependencies {
 
     compile 'com.github.javaparser:javaparser-core:3.6.5'
-    compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
-    compile 'org.apache.commons:commons-lang3:3.8.1'
+//    compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
+//    compile 'org.apache.commons:commons-lang3:3.8.1'
     compile 'org.projectlombok:lombok:1.18.10'
-    compile 'com.alibaba:fastjson:1.2.62'
+//    compile 'com.alibaba:fastjson:1.2.62'
 
-    testCompile 'junit:junit:4.12'
-    testCompile 'io.github.benas:random-beans:3.6.0'
-
+//    testCompile 'junit:junit:4.12'
+//    testCompile 'io.github.benas:random-beans:3.6.0'
+//
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 }
 
-// 必须与idea的版本保持一致 See https://github.com/JetBrains/gradle-intellij-plugin/
+// 必须与idea的版本保持一致，否则会有类似报错：类文件具有错误的版本 55.0, 应为 52.0
 intellij {
     version '2020.1.1'
 }
-//patchPluginXml {
-//    changeNotes """
-//      Add change notes here.<br>
-//      <em>most HTML tags may be used</em>"""
-//}
+patchPluginXml {
+    sinceBuild '145'
+    untilBuild '212'
+}
 // Click publishPlugin in Gradle
 publishPlugin {
-    channels 'beta'
+//    channels 'beta'
+    channels 'Stable'
     token = 'perm:eGlhb2dhbmdmYW4=.OTItMzcxMg==.xIigYSYuygm4vGsvmUNOnaNtOwm6EU'
 }

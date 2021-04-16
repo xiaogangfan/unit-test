@@ -1,11 +1,12 @@
 package org.xiaogang.action.dialog;
 
 import com.intellij.openapi.ui.DialogWrapper;
-import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
+import org.xiaogang.util.CollectionUtils;
 
 import javax.swing.*;
 import java.awt.*;

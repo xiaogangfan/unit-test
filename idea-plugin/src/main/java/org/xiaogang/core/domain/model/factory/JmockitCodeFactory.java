@@ -6,14 +6,16 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.Statement;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.compress.utils.Lists;
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.compress.utils.Lists;
+//import org.apache.commons.lang3.StringUtils;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaTestCodeParser;
+import org.xiaogang.util.CollectionUtils;
 import org.xiaogang.util.StringUtil;
+import org.xiaogang.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -247,7 +249,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
     private List<String> serviceInvokeMatcher() {
         List<String> result = new ArrayList<>();
         if(CollectionUtils.isEmpty(javaSourceCodeParser.getFieldList())){
-            return Lists.newArrayList();
+            return new ArrayList<>();
         }
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
             if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
