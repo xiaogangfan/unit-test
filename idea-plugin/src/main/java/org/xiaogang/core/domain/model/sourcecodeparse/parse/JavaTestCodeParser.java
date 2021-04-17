@@ -1,7 +1,7 @@
 package org.xiaogang.core.domain.model.sourcecodeparse.parse;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
-import lombok.EqualsAndHashCode;
+//import lombok.EqualsAndHashCode;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.util.StringUtil;
 
@@ -12,7 +12,7 @@ import org.xiaogang.util.StringUtil;
  * @author xiaogangfan
  * @create 2019-09-03 5:14 PM
  */
-@EqualsAndHashCode(callSuper = false)
+//@EqualsAndHashCode(callSuper = false)
 public class JavaTestCodeParser extends JavaCodeParser {
 
     public String getMethodString(MethodDeclaration methodDeclaration) {

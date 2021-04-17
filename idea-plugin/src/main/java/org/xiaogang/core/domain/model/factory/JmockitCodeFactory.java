@@ -4,11 +4,12 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.Statement;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
 //import org.apache.commons.collections.CollectionUtils;
 //import org.apache.commons.compress.utils.Lists;
 //import org.apache.commons.lang3.StringUtils;
+//import lombok.NoArgsConstructor;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
@@ -238,9 +239,35 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         return mockStatement;
     }
 
-    @Data
-    @NoArgsConstructor
+
     public static class MockStatement {
+        public MockStatement() {
+        }
+
+        public String getResultType() {
+            return resultType;
+        }
+
+        public void setResultType(String resultType) {
+            this.resultType = resultType;
+        }
+
+        public String getResultVar() {
+            return resultVar;
+        }
+
+        public void setResultVar(String resultVar) {
+            this.resultVar = resultVar;
+        }
+
+        public String getInvokeStatment() {
+            return invokeStatment;
+        }
+
+        public void setInvokeStatment(String invokeStatment) {
+            this.invokeStatment = invokeStatment;
+        }
+
         private String resultType = "";
         private String resultVar;
         private String invokeStatment;

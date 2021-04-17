@@ -5,10 +5,10 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.Type;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+//import lombok.AllArgsConstructor;
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
+//import lombok.experimental.Accessors;
 
 import java.util.Optional;
 
@@ -18,10 +18,6 @@ import java.util.Optional;
  * @author xiaogangfan
  * @create 2019-09-03 7:10 PM
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
 public class Method {
     private String name;
     /**
@@ -35,4 +31,63 @@ public class Method {
     private NodeList<Parameter> paramList;
     private MethodDeclaration methodDeclaration;
 
+
+    public Method() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public Optional<BlockStmt> getOriginBody() {
+        return originBody;
+    }
+
+    public void setOriginBody(Optional<BlockStmt> originBody) {
+        this.originBody = originBody;
+    }
+
+    public NodeList<Parameter> getParamList() {
+        return paramList;
+    }
+
+    public void setParamList(NodeList<Parameter> paramList) {
+        this.paramList = paramList;
+    }
+
+    public MethodDeclaration getMethodDeclaration() {
+        return methodDeclaration;
+    }
+
+    public void setMethodDeclaration(MethodDeclaration methodDeclaration) {
+        this.methodDeclaration = methodDeclaration;
+    }
 }
