@@ -4,10 +4,24 @@
     <vendor email="xiaogangfan@126.com" url="https://github.com/xiaogangfan/unit-test">xiaogangfan</vendor>
 
     <description>
+        <![CDATA[
         Function: Automatically generate unit test code to improve research and development efficiency.
-        Usage: In the code to be tested, right click -> select [generate...] -> [Auto Generation Test Code] -> select the method to be tested -> OK.
+        <br>
+        Usage:<br>
+        &nbsp;&nbsp;first: import pom<br>
+        &nbsp;&nbsp;&lt;dependency&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;io.github.xiaogangfan;/groupId&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;unit-test-api&lt;/artifactId&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.0&lt;/version&gt;<br>
+        &nbsp;&nbsp;&lt;/dependency&gt;<br>
+        &nbsp;&nbsp;second: generate code<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;        In the code to be tested, right click -> select [generate...] -> [Auto Generation Test Code] -> select the method to be tested -> OK.
+        <br>
         This plugin is promoting in the company.
+        ]]>
     </description>
+
+
 
     <depends>com.intellij.modules.lang</depends>
 
