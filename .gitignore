@@ -43,4 +43,5 @@ proguard/
 *.log
 
 unit.test*
+unit-test-api/target
 

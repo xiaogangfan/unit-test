@@ -2,10 +2,6 @@ package unit.test.api;
 
 import java.util.Date;
 
-/**
- * @author xiaogangfan
- * @date 2019/12/31
- */
 public class Test3 {
 
     public Test3() {
