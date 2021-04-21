@@ -6,18 +6,19 @@
     <description>
         <![CDATA[
         Function: Automatically generate unit test code to improve research and development efficiency.
-        <br>
+        <br><br>
         Usage:<br>
-        &nbsp;&nbsp;first: import pom<br>
+        &nbsp;&nbsp;First: import pom<br>
         &nbsp;&nbsp;&lt;dependency&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;io.github.xiaogangfan&lt;/groupId&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;unit-test-api&lt;/artifactId&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.0&lt;/version&gt;<br>
         &nbsp;&nbsp;&lt;/dependency&gt;<br>
-        &nbsp;&nbsp;second: generate code<br>
+        &nbsp;&nbsp;Second: generate code<br>
         &nbsp;&nbsp;&nbsp;&nbsp;        In the code to be tested, right click -> select [generate...] -> [Auto Generation Test Code] -> select the method to be tested -> OK.
-        <br>
-        This plugin is promoting in the company.
+        <br><br>s
+        This plugin is promoting in the company.<br>
+        If you have question, please send email to xiaogangfan@126.com
         ]]>
     </description>
 
