@@ -26,7 +26,7 @@
 
 ### 未来要支持的功能
 - 优先级1
-  - 放到插件中心，便于安装
+  - 放到插件中心，便于安装 
 - 优先级2
   - 更好的去猜测如何设置调用的case(通过分析代码中的if else)、需要多少case以及如何Assert（分析结果）
   - 支持更多风格的单测生成，比如Spock等
@@ -77,9 +77,9 @@
 
 ```
 <dependency>
-  <groupId>org.xiaogang</groupId>
+  <groupId>io.github.xiaogangfan</groupId>
   <artifactId>unit-test-api</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency> 
 
 ```
