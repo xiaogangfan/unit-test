@@ -28,8 +28,13 @@ import java.util.List;
  * @create 2019-09-03 6:58 PM
  */
 public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCodeParser> {
+    private Integer parseTimes = 0;
+
     @Override
     public void visit(MethodDeclaration n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
         Method method = new Method();
         method.setBody(n.getBody().toString());
         method.setOriginBody(n.getBody());
@@ -51,23 +56,42 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
             methodList.add(method);
             arg.setMethodList(methodList);
         }
+        parseTimes++;
         super.visit(n, arg);
+    }
+
+    private boolean canParse(Integer parseTimes) {
+        if (parseTimes > 6) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public void visit(ClassOrInterfaceDeclaration n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
         arg.setName(n.getNameAsString());
+        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(PackageDeclaration n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
         arg.setPkg(n.getNameAsString());
+        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final FieldDeclaration n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
         List<VariableDeclarator> variableDeclaratorList = Lists.newArrayList();
         Iterator<com.github.javaparser.ast.body.VariableDeclarator> iterator = n.getVariables().iterator();
         while (iterator.hasNext()) {
@@ -79,12 +103,15 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
         } else {
             arg.getFieldList().addAll(variableDeclaratorList);
         }
-
+        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final CompilationUnit n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
 
         n.getImports().forEach(p -> {
             if (p.getNameAsString().contains("lombok")) {
@@ -100,13 +127,19 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
             }
 
         });
+        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final ReturnStmt n, JavaSourceCodeParser arg) {
+        if (!canParse(parseTimes)) {
+            return;
+        }
         n.getExpression().ifPresent(l -> l.accept(this, arg));
         n.getComment().ifPresent(l -> l.accept(this, arg));
+        parseTimes++;
         super.visit(n, arg);
     }
+
 }

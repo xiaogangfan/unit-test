@@ -36,7 +36,9 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
-      0.0.4.2 update version of JMockit and modify code style.  
+      0.0.4.2 
+            1.update version of JMockit and modify code style.  
+            2.Fix issue that generates inner class test file.
       """
 
     sinceBuild '145'

@@ -27,7 +27,7 @@ public class AutoGenerationTestCode extends AnAction {
 
         } catch (Exception e1) {
             e1.printStackTrace();
-            result = "失败：确保源、测试件文件编译通过";
+            result = "失败：确保源、测试件文件编译通过；其他原因联系 xiaogangfan@126.com";
 //            result = "失败：" + e1.getMessage();
             Messages.showMessageDialog(
                 result
