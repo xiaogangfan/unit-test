@@ -1,10 +1,9 @@
 package org.xiaogang.core.domain.model.factory;
 
+//import com.alibaba.fastjson.JSON;
+
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
-//import org.apache.commons.collections.CollectionUtils;
-//import org.apache.commons.compress.utils.Lists;
-//import org.apache.commons.lang.StringUtils;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.ModelEnum;
@@ -18,6 +17,10 @@ import org.xiaogang.util.TestCodeUtil;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+//import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.compress.utils.Lists;
+//import org.apache.commons.lang.StringUtils;
 
 /**
  * 描述:
@@ -239,6 +242,12 @@ public abstract class AbstractTestCodeFactory {
         methodBody.append(
                 enter + space8 + javaSourceCodeParser.getName() + " " + javaSourceCodeParser.getVarName()
                         + " = ObjectInit.random(" + javaSourceCodeParser.getName() + ".class)" + sep);
+//        methodBody.append(
+//                enter + space8 + javaSourceCodeParser.getName() + " " + javaSourceCodeParser.getVarName()
+//                        + " = ObjectInit.parseObject(" + toJsonStr(javaSourceCodeParser) + "," + javaSourceCodeParser.getName() + ".class)" + sep);
+
+//        methodBody.append(enter + space8 + param.getType() + " " + param.getName()
+//                + " = ObjectInit.parseObject("+toJsonStr(param)+"," + removeGeneric(param.getType().toString()) + ".class)" + sep);
 
 
         if (CollectionUtils.isNotEmpty(method.getParamList())) {
@@ -253,6 +262,8 @@ public abstract class AbstractTestCodeFactory {
                 } else {
                     methodBody.append(enter + space8 + param.getType() + " " + param.getName()
                             + " = ObjectInit.random(" + removeGeneric(param.getType().toString()) + ".class)" + sep);
+//                    methodBody.append(enter + space8 + param.getType() + " " + param.getName()
+//                            + " = ObjectInit.parseObject("+toJsonStr(param)+"," + removeGeneric(param.getType().toString()) + ".class)" + sep);
                 }
 
                 if (method.getParamList().size() - 1 == i) {
@@ -295,6 +306,14 @@ public abstract class AbstractTestCodeFactory {
         }
         return methodBody.toString();
     }
+
+//    protected String toJsonStr(JavaSourceCodeParser param) {
+//        String clazz = javaSourceCodeParser.getPkg() + "." + javaSourceCodeParser.getName();
+//        Class load = MyClassloader.load(MyClassloader.getClassesPath(param.getPathName()), clazz);
+//        Object o = ObjectTestUtilNew.newObjectWithPropertiesValue(load);
+//        String s = JSON.toJSONString(o);
+//        return JSONFormatUtil.formatJson(s);
+//    }
 
     private boolean isList(String type) {
         String reg = "(.*?)(List<)(.*?)(>)";

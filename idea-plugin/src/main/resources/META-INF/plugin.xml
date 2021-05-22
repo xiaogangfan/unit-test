@@ -14,9 +14,25 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;unit-test-api&lt;/artifactId&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.0&lt;/version&gt;<br>
         &nbsp;&nbsp;&lt;/dependency&gt;<br>
+
+        &lt;plugin&gt; <br>
+        &nbsp;&nbsp;&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; <br>
+        &nbsp;&nbsp;&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt; <br>
+        &nbsp;&nbsp;&lt;version&gt;2.22.2&lt;/version&gt; <br>
+        &nbsp;&nbsp;&lt;configuration&gt; <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;argLine&gt; <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-javaagent:${settings.localRepository}/org/jmockit/jmockit/1.49/jmockit-1.49.jar <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;/argLine&gt; <br>
+        &nbsp;&nbsp;&lt;/configuration&gt; <br>
+        &lt;/plugin&gt; <br>
+        <br>
+
         &nbsp;&nbsp;Second: generate code<br>
         &nbsp;&nbsp;&nbsp;&nbsp;        In the code to be tested, right click -> select [generate...] -> [Auto Generation Test Code] -> select the method to be tested -> OK.
-        <br><br>s
+        <br><br>
+
+        Scope : application that built on Maven<br>
+
         This plugin is promoting in the company.<br>
         If you have question, please send email to xiaogangfan@126.com
         ]]>

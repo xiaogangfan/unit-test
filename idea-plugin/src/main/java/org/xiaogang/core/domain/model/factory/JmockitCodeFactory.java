@@ -86,9 +86,9 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     @Override
     protected void setClassHeader() {
-        importSet.add("import mockit.integration.junit4.JMockit;");
-        classHeader = "@RunWith(JMockit.class)" + enter;
-        classHeader += "public class " + javaSourceCodeParser.getName() + "Test ";
+//        importSet.add("import mockit.integration.junit4.JMockit;");
+//        classHeader = "@RunWith(JMockit.class)" + enter;
+        classHeader = "public class " + javaSourceCodeParser.getName() + "Test ";
     }
 
     @Override
