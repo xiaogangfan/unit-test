@@ -28,11 +28,15 @@ import java.util.List;
  * @create 2019-09-03 6:58 PM
  */
 public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCodeParser> {
-    private Integer parseTimes = 0;
+    private boolean canParse = true;
 
     @Override
     public void visit(MethodDeclaration n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+
+        if (!canParse()) {
+            return;
+        }
+        if(n.isPrivate()){
             return;
         }
         Method method = new Method();
@@ -56,40 +60,37 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
             methodList.add(method);
             arg.setMethodList(methodList);
         }
-        parseTimes++;
         super.visit(n, arg);
     }
 
-    private boolean canParse(Integer parseTimes) {
-        if (parseTimes > 6) {
-            return false;
-        }
-        return true;
+    private boolean canParse() {
+        return canParse;
     }
 
     @Override
     public void visit(ClassOrInterfaceDeclaration n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+        if(!n.isPublic()){
+            canParse = false;
+        }
+        if (!canParse()) {
             return;
         }
         arg.setName(n.getNameAsString());
-        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(PackageDeclaration n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+        if (!canParse()) {
             return;
         }
         arg.setPkg(n.getNameAsString());
-        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final FieldDeclaration n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+        if (!canParse()) {
             return;
         }
         List<VariableDeclarator> variableDeclaratorList = Lists.newArrayList();
@@ -103,13 +104,12 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
         } else {
             arg.getFieldList().addAll(variableDeclaratorList);
         }
-        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final CompilationUnit n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+        if (!canParse()) {
             return;
         }
 
@@ -127,18 +127,16 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
             }
 
         });
-        parseTimes++;
         super.visit(n, arg);
     }
 
     @Override
     public void visit(final ReturnStmt n, JavaSourceCodeParser arg) {
-        if (!canParse(parseTimes)) {
+        if (!canParse()) {
             return;
         }
         n.getExpression().ifPresent(l -> l.accept(this, arg));
         n.getComment().ifPresent(l -> l.accept(this, arg));
-        parseTimes++;
         super.visit(n, arg);
     }
 

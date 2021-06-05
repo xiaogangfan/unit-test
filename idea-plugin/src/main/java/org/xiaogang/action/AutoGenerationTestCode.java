@@ -12,9 +12,6 @@ import org.xiaogang.core.application.JavaSourceFileApplication;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * created by xiaogangfan on 2019/9/7.
- */
 public class AutoGenerationTestCode extends AnAction {
 
     @Override
@@ -27,7 +24,7 @@ public class AutoGenerationTestCode extends AnAction {
 
         } catch (Exception e1) {
             e1.printStackTrace();
-            result = "失败：确保源、测试件文件编译通过；其他原因联系 xiaogangfan@126.com";
+            result = "请确保源、测试件文件编译通过；其他原因联系 xiaogangfan@126.com";
 //            result = "失败：" + e1.getMessage();
             Messages.showMessageDialog(
                 result

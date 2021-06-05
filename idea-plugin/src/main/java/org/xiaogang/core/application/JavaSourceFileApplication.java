@@ -25,12 +25,6 @@ import org.xiaogang.core.domain.model.sourcecodeparse.visitor.JavaTestCodeParser
 import java.io.*;
 import java.util.List;
 
-/**
- * 描述:
- *
- * @author xiaogangfan
- * @create 2019-09-03 5:25 PM
- */
 public class JavaSourceFileApplication {
 
     public static void findFileList(File file, List<String> fileNames) {
