@@ -100,12 +100,16 @@ public class JavaTestCodeParserVisitor extends VoidVisitorAdapter<JavaTestCodePa
     public void visit(final CompilationUnit n, JavaTestCodeParser arg) {
         arg.setCompilationUnit(n);
         n.getImports().forEach(p -> {
-            if (p.getNameAsString().contains("lombok")) {
+
+            if (needFilter(p.getNameAsString())) {
                 return;
             }
+
+
             // 解决javaparser在处理import中带*的问题
             int i = p.getName().asString().lastIndexOf(".");
             String substring = p.getName().asString().substring(i + 1, i + 2);
+
             if (substring.equals(substring.toLowerCase())) {
                 arg.getImportList().add("import " + (p.isStatic() ? "static" : "") + p.getName() + ".*;");
             } else {
@@ -114,6 +118,16 @@ public class JavaTestCodeParserVisitor extends VoidVisitorAdapter<JavaTestCodePa
 
         });
         super.visit(n, arg);
+    }
+
+    private boolean needFilter(String importStr) {
+        if (importStr.contains("lombok")) {
+            return true;
+        }
+        if (importStr.contains("org.springframework.util.Assert")) {
+            return true;
+        }
+        return false;
     }
 
     @Override

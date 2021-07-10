@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.xiaogang'
-version '0.0.4.2'
+version '0.0.4.4'
 
 apply plugin: 'java'
 compileJava {

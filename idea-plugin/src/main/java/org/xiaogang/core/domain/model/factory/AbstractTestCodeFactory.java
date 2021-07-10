@@ -211,8 +211,28 @@ public abstract class AbstractTestCodeFactory {
         StringBuffer methodHeader = new StringBuffer();
         methodHeader.append(enter2 + space4 + "@Test");
         methodHeader.append(
+//                enter + space4 + "public void test" + StringUtil.firstUpper(method.getName()) + "(" + writeMethodParams(method) + ") { ");
                 enter + space4 + "public void test" + StringUtil.firstUpper(method.getName()) + "() { ");
         return methodHeader.toString();
+    }
+
+    protected String writeMethodParams(Method method) {
+        StringBuffer methodHeaderParams = new StringBuffer();
+
+        if (CollectionUtils.isEmpty(method.getParamList())) {
+            return "";
+        }
+        this.importSet.add(impo + " mockit.Injectable;");
+
+        for (int i = 0; i < method.getParamList().size(); i++) {
+            Parameter param = method.getParamList().get(i);
+            if (method.getParamList().size() - 1 == i) {
+                methodHeaderParams.append("@Injectable " + param.getType() + " " + param.getName());
+            } else {
+                methodHeaderParams.append("@Injectable " + param.getType() + " " + param.getName() + ", ");
+            }
+        }
+        return methodHeaderParams.toString();
     }
 
     protected String initInstance() {

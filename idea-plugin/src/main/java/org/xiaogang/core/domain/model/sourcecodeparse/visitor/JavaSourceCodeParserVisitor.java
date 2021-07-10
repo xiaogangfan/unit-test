@@ -107,6 +107,16 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
         super.visit(n, arg);
     }
 
+    private boolean needFilter(String importStr) {
+        if (importStr.contains("lombok")) {
+            return true;
+        }
+        if (importStr.contains("org.springframework.util.Assert")) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void visit(final CompilationUnit n, JavaSourceCodeParser arg) {
         if (!canParse()) {
@@ -114,7 +124,8 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
         }
 
         n.getImports().forEach(p -> {
-            if (p.getNameAsString().contains("lombok")) {
+
+            if (needFilter(p.getNameAsString())) {
                 return;
             }
             // 解决javaparser在处理import中带*的问题

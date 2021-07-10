@@ -10,6 +10,7 @@ import com.github.javaparser.ast.stmt.Statement;
 //import org.apache.commons.compress.utils.Lists;
 //import org.apache.commons.lang3.StringUtils;
 //import lombok.NoArgsConstructor;
+import com.google.common.collect.Lists;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
@@ -72,14 +73,14 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         importSet.add("import mockit.Tested;");
 
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
-            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
+//            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
                 fieldSet.add(
                     space4 + "@Injectable" + enter + space4 + var.getType().asString() + " " + StringUtil
                         .firstLower(var.getName().asString())
                         + ";");
                 importSet.add("import mockit.Injectable;");
                 importSet.add("import org.junit.runner.RunWith;");
-            }
+//            }
         }
 
     }
@@ -107,6 +108,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
                 methodBody.append(enter + space8 + param.getType() + " " + param.getName()
+//                methodBody.append(enter + space8  + param.getName()
                     + " = ObjectInit.random(" + param.getType() + ".class)" + sep);
                 if (method.getParamList().size() - 1 == i) {
                     methodParams += param.getName() + ",";
@@ -160,8 +162,8 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
     protected String writeMethodAssert(Method method) {
         String superResult = super.writeMethodAssert(method);
         StringBuffer verify = new StringBuffer();
-        verify.append(enter + space8 + "new Verifications() {{");
-        verify.append(enter + space8 + "}};");
+//        verify.append(enter + space8 + "new Verifications() {{");
+//        verify.append(enter + space8 + "}};");
         return verify.toString() + superResult;
     }
 
@@ -174,28 +176,44 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         mock.append(enter + space8 + "new Expectations() {{");
         List<String> matcherList = serviceInvokeMatcher();
         Iterator<Statement> iterator = method.getMethodDeclaration().getBody().get().getStatements().iterator();
+        boolean hasMock = false;
 
         while (iterator.hasNext()) {
             Node entry = iterator.next();
-            String statment = "";
+//            String statment = "";
+//            List<List<MockStatement>> collect = entry.getChildNodes().stream().map(row -> {
+//                ArrayList<String> lineContentList = Lists.newArrayList(row.getTokenRange().toString().split("\n"));
+//                List<MockStatement> invokeList = lineContentList.stream().map(lineContent -> {
+//                    MockStatement matchStatment = getMatchStatment(lineContent, matcherList);
+//                    return matchStatment;
+//                }).collect(Collectors.toList());
+//                return invokeList;
+//            }).collect(Collectors.toList());
             for (Node childNode : entry.getChildNodes()) {
                 //if (childNode.getTokenRange().toString().trim().endsWith(";")) {
                 //使用正则将关键的调用抓取出来
-                MockStatement matchStatment = getMatchStatment(childNode.getTokenRange().toString(), matcherList);
-                if (matchStatment == null || StringUtils.isBlank(matchStatment.getInvokeStatment())) {
-                    continue;
+                ArrayList<String> lineContentList = Lists.newArrayList(childNode.getTokenRange().toString().split("\n"));
+                for (String content : lineContentList) {
+                    MockStatement matchStatment = getMatchStatment(content, matcherList);
+                    if (matchStatment == null || StringUtils.isBlank(matchStatment.getInvokeStatment())) {
+                        continue;
+                    }
+                    mock.append(enter + space12 + "//" + StringUtil.replaceBlank(matchStatment.getInvokeStatment()) + sep);
+                    mock.append(
+                            enter + space12 + "//result = ObjectInit.random(" + matchStatment.getResultType() + ".class)"
+                                    + sep);
+//                    statment = "";
+                    //} else {
+                    //    statment += entry.getTokenRange().toString();
+                    //}
+                    hasMock = true;
                 }
-                mock.append(enter + space12 + "//" + StringUtil.replaceBlank(matchStatment.getInvokeStatment()) + sep);
-                mock.append(
-                    enter + space12 + "//result = ObjectInit.random(" + matchStatment.getResultType() + ".class)"
-                        + sep);
-                statment = "";
-                //} else {
-                //    statment += entry.getTokenRange().toString();
-                //}
             }
-
         }
+        if(!hasMock){
+            return "";
+        }
+
 
         mock.append(enter + space8 + "}};");
         return mock.toString();
@@ -279,9 +297,9 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
             return new ArrayList<>();
         }
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
-            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
+//            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
                 result.add("(.*?)(=)(.*?)(" + var.getName().toString() + "\\.)(.*?)(\\((\\n)?)(.*?)(])");
-            }
+//            }
         }
         return result;
     }
