@@ -2,15 +2,14 @@ package unit.test.api;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import org.checkerframework.checker.units.qual.K;
 import org.springframework.cglib.core.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ObjectInit {
 
@@ -36,6 +35,12 @@ public class ObjectInit {
             e.printStackTrace();
         }
         return objects;
+    }
+
+    public static Map randomMap(Class key, Class value ) {
+        Map map = new HashMap<>(2);
+        map.put(random(key),random(value));
+        return map;
     }
 
     public static <T> T random(Class<T> clz) {

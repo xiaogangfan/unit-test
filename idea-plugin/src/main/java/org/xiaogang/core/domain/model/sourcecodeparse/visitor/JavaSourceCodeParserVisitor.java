@@ -36,9 +36,9 @@ public class JavaSourceCodeParserVisitor extends VoidVisitorAdapter<JavaSourceCo
         if (!canParse()) {
             return;
         }
-        if(n.isPrivate()){
-            return;
-        }
+//        if(n.isPrivate()){
+//            return;
+//        }
         Method method = new Method();
         method.setBody(n.getBody().toString());
         method.setOriginBody(n.getBody());

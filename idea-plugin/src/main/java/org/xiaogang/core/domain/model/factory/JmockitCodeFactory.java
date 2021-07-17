@@ -4,13 +4,6 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.stmt.Statement;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//import org.apache.commons.collections.CollectionUtils;
-//import org.apache.commons.compress.utils.Lists;
-//import org.apache.commons.lang3.StringUtils;
-//import lombok.NoArgsConstructor;
-import com.google.common.collect.Lists;
 import org.xiaogang.core.domain.model.Config;
 import org.xiaogang.core.domain.model.Method;
 import org.xiaogang.core.domain.model.sourcecodeparse.parse.JavaSourceCodeParser;
@@ -27,6 +20,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+//import lombok.Data;
+//import lombok.NoArgsConstructor;
+//import org.apache.commons.collections.CollectionUtils;
+//import org.apache.commons.compress.utils.Lists;
+//import org.apache.commons.lang3.StringUtils;
+//import lombok.NoArgsConstructor;
+
 /**
  * 描述:
  *
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     public JmockitCodeFactory(JavaSourceCodeParser JavaSourceCodeParser, JavaTestCodeParser javaTestCodeParser,
-        Config config) {
+                              Config config) {
         this.javaSourceCodeParser = JavaSourceCodeParser;
         this.javaTestCodeParser = javaTestCodeParser;
         this.config = config;
@@ -68,18 +68,18 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         }
 
         fieldSet.add(
-            space4 + "@Tested" + enter + space4 + javaSourceCodeParser.getName() + " " + javaSourceCodeParser.getVarName()
-                + ";");
+                space4 + "@Tested" + enter + space4 + javaSourceCodeParser.getName() + " " + javaSourceCodeParser.getVarName()
+                        + ";");
         importSet.add("import mockit.Tested;");
 
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
 //            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
-                fieldSet.add(
+            fieldSet.add(
                     space4 + "@Injectable" + enter + space4 + var.getType().asString() + " " + StringUtil
-                        .firstLower(var.getName().asString())
-                        + ";");
-                importSet.add("import mockit.Injectable;");
-                importSet.add("import org.junit.runner.RunWith;");
+                            .firstLower(var.getName().asString())
+                            + ";");
+            importSet.add("import mockit.Injectable;");
+            importSet.add("import org.junit.runner.RunWith;");
 //            }
         }
 
@@ -107,11 +107,15 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
             importSet.add("import unit.test.api.ObjectInit" + sep);
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
-                methodBody.append(enter + space8 + param.getType() + " " + param.getName()
-//                methodBody.append(enter + space8  + param.getName()
-                    + " = ObjectInit.random(" + param.getType() + ".class)" + sep);
+//                methodBody.append(enter + space8 + param.getType() + " " + param.getName()
+////                methodBody.append(enter + space8  + param.getName()
+//                        + " = ObjectInit.random(" + param.getType() + ".class)" + sep);
+
+                methodBody.append(enter + space8 + (writeMethodInvoke_param(param) + sep));
+
+
                 if (method.getParamList().size() - 1 == i) {
-                    methodParams += param.getName() + ",";
+                    methodParams += param.getName();
                 } else {
                     methodParams += param.getName() + ", ";
                 }
@@ -120,42 +124,48 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
         methodBody.append(writeMethodMock(method));
 
-        methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
         if (!method.getType().isVoidType()) {
             String resultType = StringUtil.firstUpper(method.getType().asString());
             if (method.getMethodDeclaration().isPrivate()) {
-                importSet.add("import mockit.Deencapsulation;");
-                methodBody.append(
-                    enter + space8 + resultType + " invokeResult = (" + resultType + ")" + "Deencapsulation.invoke("
-                        + instansVarName + ", \"" + method.getName() + "\", "
-                        + (org.apache.commons.lang.StringUtils.isNotBlank(methodParams) ? (", " + methodParams)
-                        : methodParams) + ")"
-                        + sepAndenter);
+//                importSet.add("import mockit.Deencapsulation;");
+
+                methodBody.append(writePrivateInvoke(instansVarName, methodParams, method));
+//                methodBody.append(enter + space8 +"Method "+ instansVarName+method.getName()+" = " +instansVarName+".getClass().getMethod("+method.getName()+");");
+//                methodBody.append(enter + space8 +instansVarName+method.getName()+".setAccessible(true)");
+//                methodBody.append(enter + space8 +instansVarName+method.getName()+".invoke("+(StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"+")"+ sepAndenter);
             } else {
                 methodBody.append(
-                    enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
-                        + methodParams + ")" + sepAndenter);
+                        enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
+                                + methodParams + ")" + sepAndenter);
             }
 
         } else {
             if (method.getMethodDeclaration().isPrivate()) {
-                importSet.add("import mockit.Deencapsulation;");
-                methodBody.append(
-                    enter + space8 + "Deencapsulation.invoke("
-                        + instansVarName + ", " + method.getName() + ", "
-                        + (org.apache.commons.lang.StringUtils.isNotBlank(methodParams) ? (", " + methodParams)
-                        : methodParams) + ")"
-                        + sepAndenter);
+//                importSet.add("import mockit.Deencapsulation;");
+                methodBody.append(writePrivateInvoke(instansVarName, methodParams, method));
             } else {
                 methodBody.append(
-                    enter + space8 + instansVarName + "." + method.getName() + "("
-                        + methodParams + ")" + sepAndenter);
+                        enter + space8 + instansVarName + "." + method.getName() + "("
+                                + methodParams + ")" + sepAndenter);
             }
 
         }
         return methodBody.toString();
     }
 
+
+//    private String writePrivateInvoke(String instansVarName, String methodParams, Method method) {
+//        importSet.add("import java.lang.reflect.Method;");
+//        StringBuffer methodBodyPrivate = new StringBuffer();
+//        methodBodyPrivate.append(enter + space8 + "try { );");
+//        methodBodyPrivate.append(enter + space8 + space8 + "Method " + instansVarName + method.getName() + " = " + instansVarName + ".getClass().getMethod(\"" + method.getName() + "\");");
+//        methodBodyPrivate.append(enter + space8 + space8 + instansVarName + method.getName() + ".setAccessible(true);");
+//        methodBodyPrivate.append(enter + space8 + space8 + instansVarName + method.getName() + ".invoke(" + (StringUtils.isNotBlank(methodParams) ? methodParams : "") + ")" + ");");
+//        methodBodyPrivate.append(enter + space8 + " } catch (Exception e) {");
+//        methodBodyPrivate.append(enter + space8 + space8 + "e.printStackTrace();");
+//        methodBodyPrivate.append(enter + space8 + "}" + sepAndenter);
+//        return methodBodyPrivate.toString();
+//    }
 
 
     @Override
@@ -190,27 +200,44 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 //                return invokeList;
 //            }).collect(Collectors.toList());
             for (Node childNode : entry.getChildNodes()) {
+
+                MockStatement matchStatment = getMatchStatment(childNode.getTokenRange().toString(), matcherList);
+                if (matchStatment == null || StringUtils.isBlank(matchStatment.getInvokeStatment())) {
+                    continue;
+                }
+                mock.append(enter + space12 + "//" + StringUtil.replaceBlank(matchStatment.getInvokeStatment()) + sep);
+                mock.append(
+                        enter + space12 + "//result = ObjectInit.random(" + matchStatment.getResultType() + ".class)"
+                                + sep);
+//                    statment = "";
+                //} else {
+                //    statment += entry.getTokenRange().toString();
+                //}
+                hasMock = true;
+
+
                 //if (childNode.getTokenRange().toString().trim().endsWith(";")) {
                 //使用正则将关键的调用抓取出来
-                ArrayList<String> lineContentList = Lists.newArrayList(childNode.getTokenRange().toString().split("\n"));
-                for (String content : lineContentList) {
-                    MockStatement matchStatment = getMatchStatment(content, matcherList);
-                    if (matchStatment == null || StringUtils.isBlank(matchStatment.getInvokeStatment())) {
-                        continue;
-                    }
-                    mock.append(enter + space12 + "//" + StringUtil.replaceBlank(matchStatment.getInvokeStatment()) + sep);
-                    mock.append(
-                            enter + space12 + "//result = ObjectInit.random(" + matchStatment.getResultType() + ".class)"
-                                    + sep);
-//                    statment = "";
-                    //} else {
-                    //    statment += entry.getTokenRange().toString();
-                    //}
-                    hasMock = true;
-                }
+//                ArrayList<String> lineContentList = Lists.newArrayList(childNode.getTokenRange().toString().split(";"));
+//                for (String content : lineContentList) {
+//                    content = content.replaceAll("\\n","");
+//                    MockStatement matchStatment = getMatchStatment(content, matcherList);
+//                    if (matchStatment == null || StringUtils.isBlank(matchStatment.getInvokeStatment())) {
+//                        continue;
+//                    }
+//                    mock.append(enter + space12 + "//" + StringUtil.replaceBlank(matchStatment.getInvokeStatment()) + sep);
+//                    mock.append(
+//                            enter + space12 + "//result = ObjectInit.random(" + matchStatment.getResultType() + ".class)"
+//                                    + sep);
+////                    statment = "";
+//                    //} else {
+//                    //    statment += entry.getTokenRange().toString();
+//                    //}
+//                    hasMock = true;
+//                }
             }
         }
-        if(!hasMock){
+        if (!hasMock) {
             return "";
         }
 
@@ -241,7 +268,7 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
         mockStatement.setInvokeStatment(statmentArray[1]);
         String[] declari = statmentArray[0].trim().split(" ");
         List<String> collect = Arrays.stream(declari).filter(row -> StringUtils.isNotBlank(row.trim())).collect(
-            Collectors.toList());
+                Collectors.toList());
         if (collect.size() > 1) {
             for (int i = 0; i < collect.size(); i++) {
                 if (collect.size() - 1 == i) {
@@ -293,12 +320,12 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
     private List<String> serviceInvokeMatcher() {
         List<String> result = new ArrayList<>();
-        if(CollectionUtils.isEmpty(javaSourceCodeParser.getFieldList())){
+        if (CollectionUtils.isEmpty(javaSourceCodeParser.getFieldList())) {
             return new ArrayList<>();
         }
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
 //            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
-                result.add("(.*?)(=)(.*?)(" + var.getName().toString() + "\\.)(.*?)(\\((\\n)?)(.*?)(])");
+            result.add("(.*?)(=)(.*?)(" + var.getName().toString() + "\\.)(.*?)(\\((\\n)?)(.*?)(])");
 //            }
         }
         return result;
@@ -307,8 +334,8 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
     public static void main(String[] args) {
         //String target = " sdfsd settleResultForShowMapper.findForShow(conditions);sdf";
         String target = " Optional[SimpleResultDTO<Map<String, SimpleBatchInfoDTO>> mapSimpleResultDTO = "
-            + "inspectHsfService.searchBatch(\n"
-            + "            batchIdList)]";
+                + "inspectHsfService.searchBatch(\n"
+                + "            batchIdList)]";
         String reg = "(inspectHsfService\\.)(.*?)(\\((\\n)?)(.*?)(\\))";
         //String reg = "(settleResultForShowMapper\\.)(.*?)(\\))";
         Pattern pattern = Pattern.compile(reg);

@@ -276,33 +276,28 @@ public abstract class AbstractTestCodeFactory {
             for (int i = 0; i < method.getParamList().size(); i++) {
                 Parameter param = method.getParamList().get(i);
                 // 初始化参数
-                if (isList(param.getType().toString())) {
-                    methodBody.append(enter + space8 + param.getType() + " " + param.getName()
-                            + " = ObjectInit.randomList(" + removeGeneric(param.getType().toString()) + ".class,1)" + sep);
-                } else {
-                    methodBody.append(enter + space8 + param.getType() + " " + param.getName()
-                            + " = ObjectInit.random(" + removeGeneric(param.getType().toString()) + ".class)" + sep);
-//                    methodBody.append(enter + space8 + param.getType() + " " + param.getName()
-//                            + " = ObjectInit.parseObject("+toJsonStr(param)+"," + removeGeneric(param.getType().toString()) + ".class)" + sep);
-                }
+                methodBody.append(enter + space8 + (writeMethodInvoke_param(param) + sep));
 
                 if (method.getParamList().size() - 1 == i) {
-                    methodParams += param.getName() + ",";
+                    methodParams += param.getName();
                 } else {
                     methodParams += param.getName() + ", ";
                 }
             }
         }
-        methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
+//        methodParams = methodParams.length() > 0 ? methodParams.substring(0, methodParams.length() - 1) : "";
         if (!method.getType().isVoidType()) {
             String resultType = StringUtil.firstUpper(method.getType().asString());
             if (method.getMethodDeclaration().isPrivate()) {
-                importSet.add("import mockit.Deencapsulation;");
-                methodBody.append(
-                        enter + space8 + resultType + " invokeResult = (" + resultType + ")" + "Deencapsulation.invoke("
-                                + instansVarName + ", \"" + method.getName()
-                                + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"
-                                + sepAndenter);
+//                importSet.add("import mockit.Deencapsulation;");
+                methodBody.append(writePrivateInvoke(instansVarName, methodParams, method));
+//                methodBody.append(
+//
+//
+//                        enter + space8 + resultType + " invokeResult = (" + resultType + ")" + "Deencapsulation.invoke("
+//                                + instansVarName + ", \"" + method.getName()
+//                                + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"
+//                                + sepAndenter);
             } else {
                 methodBody.append(
                         enter + space8 + resultType + " invokeResult = " + instansVarName + "." + method.getName() + "("
@@ -311,12 +306,12 @@ public abstract class AbstractTestCodeFactory {
 
         } else {
             if (method.getMethodDeclaration().isPrivate()) {
-                importSet.add("import mockit.Deencapsulation;");
-                methodBody.append(
-                        enter + space8 + "Deencapsulation.invoke("
-                                + instansVarName + ", " + method.getName() + ", "
-                                + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")"
-                                + sepAndenter);
+//                importSet.add("import mockit.Deencapsulation;");
+//                importSet.add("import mockit.Deencapsulation;");
+//                methodBody.append(enter + space8 + "Method " + instansVarName + method.getName() + " " + instansVarName + ".getClass().getMethod(" + method.getName() + ");");
+//                methodBody.append(enter + space8 + instansVarName + method.getName() + ".setAccessible(true)");
+//                methodBody.append(enter + space8 + instansVarName + method + ".invoke(" + (StringUtils.isNotBlank(methodParams) ? (", " + methodParams) : methodParams) + ")" + ")" + sepAndenter);
+                methodBody.append(writePrivateInvoke(instansVarName, methodParams, method));
             } else {
                 methodBody.append(
                         enter + space8 + instansVarName + "." + method.getName() + "("
@@ -327,6 +322,27 @@ public abstract class AbstractTestCodeFactory {
         return methodBody.toString();
     }
 
+    /**
+     * 私有方法调用
+     *
+     * @param instansVarName
+     * @param methodParams
+     * @param method
+     * @return
+     */
+    protected String writePrivateInvoke(String instansVarName, String methodParams, Method method) {
+        importSet.add("import java.lang.reflect.Method;");
+        StringBuffer methodBodyPrivate = new StringBuffer();
+        methodBodyPrivate.append(enter + space8 + "try {");
+        methodBodyPrivate.append(enter + space8 + space4 + "Method " + instansVarName + method.getName() + " = " + instansVarName + ".getClass().getMethod(\"" + method.getName() + "\");");
+        methodBodyPrivate.append(enter + space8 + space4 + instansVarName + method.getName() + ".setAccessible(true);");
+        methodBodyPrivate.append(enter + space8 + space4 + instansVarName + method.getName() + ".invoke(" + (StringUtils.isNotBlank(methodParams) ? methodParams : "") + ");");
+        methodBodyPrivate.append(enter + space8 + " } catch (Exception e) {");
+        methodBodyPrivate.append(enter + space8 + space4 + "e.printStackTrace();");
+        methodBodyPrivate.append(enter + space8 + "}" + sepAndenter);
+        return methodBodyPrivate.toString();
+    }
+
 //    protected String toJsonStr(JavaSourceCodeParser param) {
 //        String clazz = javaSourceCodeParser.getPkg() + "." + javaSourceCodeParser.getName();
 //        Class load = MyClassloader.load(MyClassloader.getClassesPath(param.getPathName()), clazz);
@@ -335,8 +351,18 @@ public abstract class AbstractTestCodeFactory {
 //        return JSONFormatUtil.formatJson(s);
 //    }
 
-    private boolean isList(String type) {
+    protected boolean isList(String type) {
         String reg = "(.*?)(List<)(.*?)(>)";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(type);
+        while (matcher.find()) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean isMap(String type) {
+        String reg = "(.*?)(Map<)(.*?)(>)";
         Pattern pattern = Pattern.compile(reg);
         Matcher matcher = pattern.matcher(type);
         while (matcher.find()) {
@@ -351,6 +377,16 @@ public abstract class AbstractTestCodeFactory {
         Matcher matcher = pattern.matcher(type.toString());
         while (matcher.find()) {
             return matcher.group(3);
+        }
+        return type;
+    }
+
+    protected static String removeGenericMap(String type) {
+        String reg = "(.*?)(Map<)(.*?),(.*?)(>)";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(type.toString());
+        while (matcher.find()) {
+            return matcher.group(3)+".class,"+matcher.group(4)+".class";
         }
         return type;
     }
@@ -378,5 +414,24 @@ public abstract class AbstractTestCodeFactory {
             assertStr.append(enter + space8 + TestCodeUtil.RESULTASSERT + sep);
         }
         return assertStr.toString();
+    }
+
+
+    protected String writeMethodInvoke_param(Parameter param) {
+        StringBuffer sb = new StringBuffer();
+        // 初始化参数
+        if (isList(param.getType().toString())) {
+            sb.append(enter + space8 + param.getType() + " " + param.getName()
+                    + " = ObjectInit.randomList(" + removeGeneric(param.getType().toString()) + ".class,1)" + sep);
+        }else if (isMap(param.getType().toString())) {
+            sb.append(enter + space8 + param.getType() + " " + param.getName()
+                    + " = ObjectInit.randomMap(" + removeGenericMap(param.getType().toString()) + ")" + sep);
+        } else {
+            sb.append(enter + space8 + param.getType() + " " + param.getName()
+                    + " = ObjectInit.random(" + removeGeneric(param.getType().toString()) + ".class)" + sep);
+//                    methodBody.append(enter + space8 + param.getType() + " " + param.getName()
+//                            + " = ObjectInit.parseObject("+toJsonStr(param)+"," + removeGeneric(param.getType().toString()) + ".class)" + sep);
+        }
+        return sb.toString();
     }
 }
