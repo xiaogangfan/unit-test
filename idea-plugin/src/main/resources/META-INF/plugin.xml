@@ -12,7 +12,7 @@
         &nbsp;&nbsp;&lt;dependency&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;groupId&gt;io.github.xiaogangfan&lt;/groupId&gt;<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&lt;artifactId&gt;unit-test-api&lt;/artifactId&gt;<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.1&lt;/version&gt;<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&lt;version&gt;1.0.2&lt;/version&gt;<br>
         &nbsp;&nbsp;&lt;/dependency&gt;<br>
 
         &lt;plugin&gt; <br>
