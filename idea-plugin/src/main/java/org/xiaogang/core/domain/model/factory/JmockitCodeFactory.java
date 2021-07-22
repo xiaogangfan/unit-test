@@ -74,6 +74,13 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 
         for (VariableDeclarator var : javaSourceCodeParser.getFieldList()) {
 //            if (var.getParentNode().get().getTokenRange().toString().contains("@")) {
+            if (isSimple(var)) {
+                fieldSet.add(enter + space4 + var.getType().asString() + " " + StringUtil
+                        .firstLower(var.getName().asString())
+                        + " = " + "ObjectInit.random(" + getSimpleClass(var) + ") ;");
+                continue;
+            }
+
             fieldSet.add(
                     space4 + "@Injectable" + enter + space4 + var.getType().asString() + " " + StringUtil
                             .firstLower(var.getName().asString())
@@ -83,6 +90,72 @@ public class JmockitCodeFactory extends AbstractTestCodeFactory {
 //            }
         }
 
+    }
+
+    private String getSimpleClass(VariableDeclarator var) {
+        String type = var.getType().toString();
+        if ("String".equals(type)) {
+            return "String.class";
+        }
+        if ("boolean".equals(type) || "Boolean".equals(type)) {
+            return "Boolean.class";
+        }
+        if ("char".equals(type) || "Character".equals(type)) {
+            return "Character.class";
+        }
+        if ("int".equals(type) || "Integer".equals(type)) {
+            return "Character.class";
+
+        }
+        if ("byte".equals(type) || "Byte".equals(type)) {
+            return "Byte.class";
+
+        }
+        if ("short".equals(type) || "Short".equals(type)) {
+            return "Short.class";
+        }
+        if ("long".equals(type) || "Long".equals(type)) {
+            return "Long.class";
+        }
+        if ("float".equals(type) || "Float".equals(type)) {
+            return "Float.class";
+        }
+        if ("double".equals(type) || "Double".equals(type)) {
+            return "Double.class";
+        }
+        return "";
+    }
+
+    private boolean isSimple(VariableDeclarator var) {
+        String type = var.getType().toString();
+        if ("String".equals(type)) {
+            return true;
+        }
+        if ("boolean".equals(type) || "Boolean".equals(type)) {
+            return true;
+        }
+        if ("char".equals(type) || "Character".equals(type)) {
+            return true;
+        }
+        if ("int".equals(type) || "Integer".equals(type)) {
+            return true;
+        }
+        if ("byte".equals(type) || "Byte".equals(type)) {
+            return true;
+        }
+        if ("short".equals(type) || "Short".equals(type)) {
+            return true;
+        }
+        if ("long".equals(type) || "Long".equals(type)) {
+            return true;
+        }
+        if ("float".equals(type) || "Float".equals(type)) {
+            return true;
+        }
+        if ("double".equals(type) || "Double".equals(type)) {
+            return true;
+        }
+        return false;
     }
 
     @Override

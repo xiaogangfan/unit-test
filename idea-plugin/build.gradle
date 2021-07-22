@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.xiaogang'
-version '0.0.4.6'
+version '0.0.4.7'
 
 apply plugin: 'java'
 compileJava {
@@ -20,6 +20,7 @@ repositories {
 dependencies {
 
     compile 'com.github.javaparser:javaparser-core:3.6.5'
+    compile 'io.github.xiaogangfan:unit-test-api:1.0.2'
 //    compile 'com.alibaba:fastjson:1.2.62'
 //    compile 'com.athaydes.osgiaas:osgiaas-javac:0.7'
 //    compile 'org.apache.commons:commons-lang3:3.8.1'
