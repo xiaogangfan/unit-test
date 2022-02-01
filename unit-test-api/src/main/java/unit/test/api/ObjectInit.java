@@ -2,14 +2,17 @@ package unit.test.api;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import org.checkerframework.checker.units.qual.K;
 import org.springframework.cglib.core.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ObjectInit {
 
@@ -44,48 +47,53 @@ public class ObjectInit {
     }
 
     public static <T> T random(Class<T> clz) {
+        if (clz == null) {
+            throw new RuntimeException("type cannot be null");
+        }
         if (isPrimitive(clz)) {
             return (T) initPrimitiveValue(clz);
         }
         T obj = (T) ReflectUtils.newInstance(clz);
-        Field[] fields = clz.getDeclaredFields();
-        for (Field fieldtemp : fields) {
-            fieldtemp.setAccessible(true);
-            Class fieldClz = fieldtemp.getType();
-            //if (Modifier.isFinal(fieldClz.getModifiers())) {
-            //    continue;
-            //}
-            try {
-                // Init basic type
-                if (isPrimitive(fieldClz)) {
-                    fieldtemp.set(obj, initPrimitiveValue(fieldClz));
-                    continue;
-                }
+        Class<?> klass = clz;
+        do {
+            Field[] fields = klass.getDeclaredFields();
+            for (Field fieldtemp : fields) {
+                fieldtemp.setAccessible(true);
+                Class<?> fieldClz = fieldtemp.getType();
+                //if (Modifier.isFinal(fieldClz.getModifiers())) {
+                //    continue;
+                //}
+                try {
+                    // Init basic type
+                    if (isPrimitive(fieldClz)) {
+                        fieldtemp.set(obj, initPrimitiveValue(fieldClz));
+                        continue;
+                    }
 
-                // Init javabean
-                if (!isJavaClass(fieldClz)) {
-                    fieldtemp.set(obj, random(fieldClz));
-                    continue;
-                }
+                    // Init javabean
+                    if (!isJavaClass(fieldClz)) {
+                        fieldtemp.set(obj, random(fieldClz));
+                        continue;
+                    }
 
-                Type genericType = fieldtemp.getGenericType();
-                if (genericType == null) {
-                    continue;
-                }
-                // 如果是泛型参数的类型
-                if (genericType instanceof ParameterizedType
+                    Type genericType = fieldtemp.getGenericType();
+                    if (genericType == null) {
+                        continue;
+                    }
+                    // 如果是泛型参数的类型
+                    if (genericType instanceof ParameterizedType
                         && fieldClz.equals(List.class)) {
-                    ParameterizedType pt = (ParameterizedType) genericType;
-                    //得到泛型里的class类型对象
-                    Class<?> accountPrincipalApproveClazz = (Class<?>) pt.getActualTypeArguments()[0];
-                    Object random = random(accountPrincipalApproveClazz);
-                    fieldtemp.set(obj, Lists.newArrayList(random));
-                    continue;
+                        ParameterizedType pt = (ParameterizedType) genericType;
+                        //得到泛型里的class类型对象
+                        Class<?> accountPrincipalApproveClazz = (Class<?>) pt.getActualTypeArguments()[0];
+                        Object random = random(accountPrincipalApproveClazz);
+                        fieldtemp.set(obj, Lists.newArrayList(random));
+                    }
+                } catch (Exception e) {
+                    // ignored
                 }
-
-            } catch (Exception e) {
             }
-        }
+        } while ((klass = klass.getSuperclass()) != null);
         try {
             System.out.println(clz.getSimpleName() + ":");
             JSONFormatUtil.printJson(JSON.toJSONString(obj));
